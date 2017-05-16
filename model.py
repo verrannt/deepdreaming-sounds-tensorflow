@@ -6,7 +6,7 @@ class CNN():
 
     def __init__(self, kernel_size, classes):
 
-        # Get the shapes of our simplified VGG16 architecture
+        # Get the shapes of simplified VGG16 architecture
         architecture = Architectures.vgg16_downsized(kernel_size=5,
                                                      amount_classes=1000)
 
