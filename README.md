@@ -1,4 +1,4 @@
-# tf_cnn_soundvis
+# CNN Sound Visualization
 
 Attempt to visualize layers/learned representations of CNN trained on sound data using DeepDream approaches.
 Current __work in progress__. Public only because I'm not paying for github. <3
