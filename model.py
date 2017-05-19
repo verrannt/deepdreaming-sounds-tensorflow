@@ -11,9 +11,9 @@ class CNN():
                                                      amount_classes=1000)
 
         # Init parameters
-		self.x = tf.placeholder(tf.float32, [None, 1024])
-		self.yHat = tf.placeholder(tf.float32, [None, classes])
-		self.x_image = tf.reshape(self.x, [-1,32,32,1])
+        self.x = tf.placeholder(tf.float32, [None, 1024])
+        self.yHat = tf.placeholder(tf.float32, [None, classes])
+        self.x_image = tf.reshape(self.x, [-1,32,32,1])
         self.keep_prob = tf.placeholder(tf.float32)
 
         # Data flow graph
