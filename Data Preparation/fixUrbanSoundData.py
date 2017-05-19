@@ -10,8 +10,11 @@ are (without the ten given subfolders),
 
 import pandas as pd
 import os
+import sys
 
-csv = pd.read_csv('../../TrainingData/UrbanSound8K/metadata/UrbanSound8K.csv')
+path_to_csv = sys.argv[1]
+#'../../TrainingData/UrbanSound8K/metadata/UrbanSound8K.csv'
+csv = pd.read_csv(path_to_csv)
 # contains all class titles as strings
 classes_list = csv['class'].drop_duplicates().tolist()
 # will contain all file names according to one class
