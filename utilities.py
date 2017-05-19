@@ -4,7 +4,31 @@ import numpy as np
 import matplotlib.mlab
 from os import listdir
 from os.path import isfile, join
+import random
 
+def generate_batch(samples_per_label, mypath, sample_length):
+
+    labelled_samples = []
+    labelled_samples = np.array(labelled_samples)
+    print(mypath)
+    #the folders in mypath are named after the labels of samples
+    for label in listdir(mypath):
+        samples = np.full(samples_per_label, label, dtype=str)
+        count = 0
+        print("hi")
+
+        while count < samples_per_label:
+            new_file = random.choice(listdir(mypath + "/" + label))
+            print(new_file)
+            if isfile(new_file):
+                samples = np.concatenate((samples, new_file), axis = 1)
+        labelled_samples = np.append(labelled_samples, samples, 0)
+
+    print(labelled_samples)
+
+generate_batch(1,"./Audio",1)
+
+'''
 def oneHotIt(Y):
 	m = Y.shape[0]
 	Y = Y[:,0]
@@ -57,3 +81,5 @@ def processAudio(bpm,samplingRate,mypath):
     testY = oneHotIt(testYa)
     valY = oneHotIt(valYa)
     return classes,trainX,trainYa,valX,valY,testX,testY
+
+'''
