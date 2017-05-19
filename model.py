@@ -10,19 +10,16 @@ import numpy as np
 from cnn_architectures import Architectures
 
 class CNN():
-
     def __init__(self, kernel_size, classes):
-
         # Get the shapes of simplified VGG16 architecture
         architecture = Architectures.vgg16_downsized(kernel_size=5,
                                                      amount_classes=1000)
-
         # Init parameters
         self.x = tf.placeholder(tf.float32, [None, 1024])
         self.yHat = tf.placeholder(tf.float32, [None, classes])
         self.x_image = tf.reshape(self.x, [-1,32,32,1])
         self.keep_prob = tf.placeholder(tf.float32)
-
+        
         # Data flow graph
         self.conv1_1 = self.conv_layer(self.x_image, "conv1_1")
         self.pool1 = self.max_pool(self.conv1_1, 'pool1')
