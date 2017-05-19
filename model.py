@@ -1,3 +1,10 @@
+'''
+A simple Convolutional Neural Network with 5 convolutional and 2 feed forward
+layers.
+
+@date: 2017-05-19
+'''
+
 import tensorflow as tf
 import numpy as np
 from cnn_architectures import Architectures

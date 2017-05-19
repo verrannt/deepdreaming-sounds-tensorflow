@@ -1,6 +1,8 @@
 '''
 We needed to fix the structure of the directory containing the Urban Sound Data,
-since the folder structure was not according to the labeling
+since the folder structure was not according to the class labeling
+
+@date 2017-05-19
 '''
 
 import pandas as pd
