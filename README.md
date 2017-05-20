@@ -33,5 +33,5 @@ References we might use later:
 
 ##### v0.0.3b
   + Plotting the durations of all sound samples, we found that most accumulate in the upper range:
-  ![Alt text](https://github.com/verrannt/tf_cnn_soundvis/graphics/durations_histogram.png)
+  ![Alt text](https://github.com/verrannt/TF_CNN_soundvis/graphics/durations_histogram.png)
   + Upon further investigation, it turned out that the vast majority of samples is of four seconds length (7320 samples to be precise). Hence, we are only going to use these samples.
