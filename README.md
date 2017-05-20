@@ -35,3 +35,6 @@ References we might use later:
   + Plotting the durations of all sound samples, we found that most accumulate in the 3.5 to 4 seconds range:
   ![Alt text](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/graphics/durations_histogram.png)
   + Upon further investigation, it turned out that the vast majority of samples is of four seconds length (7320 samples to be precise). Hence, we are only going to use these samples.
+
+##### v0.0.3c
+  + Added the _deleteDurations.py_ script which removes all samples that are not exactly four seconds long. This leaves us with ~84% of the training data. Yet we found that the "gun_shot" class consists of mainly sub-4-seconds samples (>95%), so we decided to drop that class out of the classification task.

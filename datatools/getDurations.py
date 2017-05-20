@@ -18,13 +18,13 @@ dirs = [f for f in listdir(mypath) if isdir(join(mypath, f))]
 
 durations = []
 
-for dir_name in dirs:
+for dir_name in dirs: # classes
     # adjust path variable
     path = mypath + dir_name + "/processed/"
     # Get list of all files in directory
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
 
-    for fname in onlyfiles:
+    for fname in onlyfiles: # for files in resp. class
         if fname.split(".")[-1] == "wav":
             f = wave.open(path+fname,"r")
             frames = f.getnframes()
