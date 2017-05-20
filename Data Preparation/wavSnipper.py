@@ -7,12 +7,7 @@ class WavSnipper:
 		# specifies how large segments should be
 		self.segment_length = segment_length
 		# specifies the directory in which to look for audio files
-		# if it is not the current directory, we need an additional slash in
-		# order to reference it
-		if file_directory == ".":
-			self.file_directory = file_directory
-		else:
-			self.file_directory = "/{}".format(file_directory)
+		self.file_directory = file_directory
 		# specifies the directory in which to store .wav-files
 		self.store_directory = store_directory
 		# create a list in which the file names of all files/subdirectories
@@ -46,16 +41,14 @@ class WavSnipper:
 							file_name=file_name, export_name="musicdata")
 					# fetch exception if it is a directory, not an audio file
 					except IsADirectoryError:
-						print("{} is a directory, not an audio file".format(
-							file_name))
+						print("{} is a directory, not an audio file".format(file_name))
 				# if not .wav-file, say so
 				else:
-					print("File {} not supported, not a .wav-file".format(
-						file_name))
+					print("File {} not supported, not a .wav-file".format(file_name))
 		else:
 			print("Subdirectory {} already exists. Delete it if you want me to\
-			 do anything, otherwise I will just do nothing".format(
-				self.store_directory))
+			       do anything, otherwise I will just do nothing".format(
+				   self.store_directory))
 
 
 	def split_into_segments(self, file_name, export_name):
