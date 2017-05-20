@@ -32,6 +32,6 @@ References we might use later:
     2. feed very short samples into the graph
 
 ##### v0.0.3b
-  + Plotting the durations of all sound samples, we found that most accumulate in the upper range:
+  + Plotting the durations of all sound samples, we found that most accumulate in the 3.5 to 4 seconds range:
   ![Alt text](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/graphics/durations_histogram.png)
   + Upon further investigation, it turned out that the vast majority of samples is of four seconds length (7320 samples to be precise). Hence, we are only going to use these samples.

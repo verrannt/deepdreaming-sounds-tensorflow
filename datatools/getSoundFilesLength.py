@@ -37,4 +37,6 @@ print("Shortest duration: " + str(min(durations)))
 print("How often 4 seconds: " + str(durations.count(4.0)))
 
 plt.hist(durations,bins=8)
+plt.xlabel("duration in secods")
+plt.ylabel("number of occurences")
 plt.show()
