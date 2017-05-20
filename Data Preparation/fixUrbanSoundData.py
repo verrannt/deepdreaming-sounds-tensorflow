@@ -3,7 +3,7 @@ We needed to fix the structure of the directory containing the Urban Sound Data,
 since the folder structure was not according to the class labeling
 
 Usage: run this script from the directory where all Urban Sound Datasamples
-are (without the ten given subfolders),
+are (extracted from the ten given subfolders),
 
 @date 2017-05-19
 '''
@@ -13,11 +13,11 @@ import os
 import sys
 
 path_to_csv = sys.argv[1]
-#'../../TrainingData/UrbanSound8K/metadata/UrbanSound8K.csv'
+
 csv = pd.read_csv(path_to_csv)
 # contains all class titles as strings
 classes_list = csv['class'].drop_duplicates().tolist()
-# will contain all file names according to one class
+# will contain all file names for each class
 sorted_file_list = []
 
 for class_name in classes_list:
