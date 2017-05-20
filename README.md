@@ -1,7 +1,6 @@
 # CNN Sound Visualization
 
-Attempt to visualize layers/learned representations of CNN trained on sound data using DeepDream approaches.
-Current __work in progress__. Public only because I'm not paying for github. <3
+Attempt to visualize layers/learned representations of CNN trained on sound data using DeepDream approaches. Current __work in progress__.
 
 Github repositories used so far:
 + [sound-cnn](https://github.com/awjuliani/sound-cnn): Simple CNN used for classifying sound data
@@ -18,8 +17,16 @@ References we might use later:
 
 ### Changelog:
 ##### v0.0.1:
-  + Implemented simplified VGG16 architecture: CNN with 5 convolutional layers, 2 fully-connected layers.
+  + Implemented simplified VGG16 architecture: CNN with 5 convolutional layers, 2 fully-connected layers. Size of layers specified in *cnn_architectures.py*
 
 ##### v0.0.2:
   + Added train and utilities files. Are not suited towards the network.
-  + Added data preparation files for sorting Urban Sound Dataset.
+
+##### v0.0.3
+  + Added code for solving problems with the UrbanSounds8K dataset in the "Data Preparation" directory. The problems included:
+    + the dataset was not structured according to the classes of its samples (the samples stem from 10 different classes and were spread seemingly random over 10 folders, not corresponding to the classes).
+    + the samples are of differing lengths ranging from 0.05s to 4.03s.
+  + For fixing the structure problem we created the _convAndOrder.sh_ and _fixUrbanSoundData.py_ scripts. The dataset is now structured in a suitable way, containing 10 subfolders each corresponding to one class.
+  + The duration problem is not solved yet, leaving us two options:
+    1. skip the samples that are below e.g. 1s
+    2. feed very short samples into the graph
