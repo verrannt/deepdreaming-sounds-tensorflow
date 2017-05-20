@@ -30,3 +30,8 @@ References we might use later:
   + The duration problem is not solved yet, leaving us two options:
     1. skip the samples that are below e.g. 1s
     2. feed very short samples into the graph
+
+##### v0.0.3b
+  + Plotting the durations of all sound samples, we found that most accumulate in the upper range:
+  ![Alt text](https://github.com/verrannt/tf_cnn_soundvis/graphics/durations_histogram.png)
+  + Upon further investigation, it turned out that the vast majority of samples is of four seconds length (7320 samples to be precise). Hence, we are only going to use these samples.
