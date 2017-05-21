@@ -12,12 +12,15 @@ class Util():
 
         ### TODO AT THE MOMENT WE ARE ALWAYS USING THE COMPLETE SAMPLE LENGTH
 
+        #batch_size=100
+        #path="../TrainingData/UrbanSound8K_modified_v2/audio/"
+
         samples_per_class = batch_size // 9
         assert samples_per_class <= 120, "Too many samples per class, max 120. \
             Reduce batch size!"
 
-        train_size, val_size, test_size = [int(samples_per_class*i) for i in [0.6, 0.2, 0.2]]
         trainX, valX, testX = [[] for _ in range(3)]
+        train_size, val_size, test_size = [int(samples_per_class*i) for i in [0.6, 0.2, 0.2]]
         self.classes = [f for f in listdir(path) if isdir(join(path,f))]
 
         for self.class_name in self.classes:
@@ -46,7 +49,7 @@ class Util():
         suitable_files = [f for f in all_files if f.split("-")[0] == set]
         random_file = random.choice(suitable_files)
         wav_file = wavfile.read(join(path+self.class_name, random_file))
-        wav_file_n = wav_data/np.max(np.abs(wav_data),axis=0)
+        wav_file_n = wav_file/np.max(np.abs(wav_file),axis=0)
         spec = matplotlib.mlab.specgram(wav_file_n)[0]
         return spec
 
@@ -59,4 +62,4 @@ class Util():
         return one_hot
 
 U = Util()
-trainX, trainY, valX, valY, testX, testY = U.generate_batch(batch_size=100,path="../TrainingData/UrbanSound8K_modified_v1/audio/",sample_length=1)
+trainX, trainY, valX, valY, testX, testY = U.generate_batch(batch_size=100,path="../TrainingData/UrbanSound8K_modified_v2/audio/",sample_length=1)
