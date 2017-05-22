@@ -67,10 +67,3 @@ class Util():
         for i, index_value in enumerate(indexes):
             one_hot[i][index_value] = 1
         return one_hot
-
-U = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
-trainX, trainY, valX, valY, testX, testY = U.generate_batch(batch_size=150, sample_length=1)
-# print(testX,testY)
-print(len(trainX[0][1]),len(trainY))
-print(len(valX), len(valY))
-print(len(testX),len(testY))
