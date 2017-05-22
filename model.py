@@ -19,7 +19,7 @@ class CNN():
         self.yHat = tf.placeholder(tf.float32, [None, classes])
         self.x_image = tf.reshape(self.x, [-1,32,32,1])
         self.keep_prob = tf.placeholder(tf.float32)
-        
+
         # Data flow graph
         self.conv1_1 = self.conv_layer(self.x_image, "conv1_1")
         self.pool1 = self.max_pool(self.conv1_1, 'pool1')
@@ -44,6 +44,11 @@ class CNN():
         self.fc7 = self.fc_layer(self.act6_dropout, "fc7")
 
         self.y = tf.nn.softmax(self.fc7, name="network_output")
+
+		self.cross_entropy = -tf.reduce_sum(self.yHat*tf.log(tf.clip_by_value(self.y,1e-10,1.0)))
+		self.correct_prediction = tf.equal(tf.argmax(self.y,1), tf.argmax(self.yHat,1))
+		self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, "float"))
+		self.train_step = tf.train.AdamOptimizer(1e-4).minimize(self.cross_entropy)
 
     def activate(input):
         return tf.nn.relu(input)
