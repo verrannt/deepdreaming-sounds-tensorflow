@@ -52,12 +52,13 @@ class Util():
         suitable_files = [f for f in all_files if f.split("-")[0] == set]
         random_file = random.choice(suitable_files)
         wav_file = wavfile.read(join(self.path + self.class_name, random_file))[1]
+        wav_file = wav_file[8000:24000]
+        print(len(wav_file))
         wav_file = wav_file/np.max(np.abs(wav_file),axis=0)
         spec = matplotlib.mlab.specgram(wav_file)[0]
         return spec
 
     def make_one_hot(self, samples):
-        print(self.classes)
         labels = []
         for i in range(len(samples)):
             labels.append(samples[i][0])
@@ -69,7 +70,7 @@ class Util():
 
 U = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
 trainX, trainY, valX, valY, testX, testY = U.generate_batch(batch_size=150, sample_length=1)
-print(testX,testY)
-print(len(trainX),len(trainY))
+# print(testX,testY)
+print(len(trainX[0][1]),len(trainY))
 print(len(valX), len(valY))
 print(len(testX),len(testY))
