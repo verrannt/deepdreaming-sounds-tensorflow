@@ -16,7 +16,7 @@ class Util():
 
     def generate_batch(self, batch_size):
 
-        ### SAMPLE LENGTH IS CURRENTLY FIXATED TO 10,000 DATAPOINTS
+        # SAMPLE LENGTH IS CURRENTLY FIXATED TO 16,000 DATAPOINTS
 
         samples_per_class = batch_size // 9
         assert samples_per_class <= 120, "Too many samples per class, max 120. \
@@ -89,9 +89,9 @@ class Util():
     def remove_label(self, samples):
         return [samples[i][1] for i in range(len(samples))]
 
-util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
-trainX,trainY,valX,valY,testX,testY = util.generate_batch(100)
-print(trainX[0])
-print(type(trainX))
-print(type(trainX[0]))
-print(len(trainX[0][0]),len(trainY))
+# util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
+# trainX,trainY,valX,valY,testX,testY = util.generate_batch(100)
+# print(trainX[0])
+# print(type(trainX))
+# print(type(trainX[0]))
+# print(len(trainX[0][0]),len(valX))
