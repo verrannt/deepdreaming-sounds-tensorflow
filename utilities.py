@@ -58,10 +58,11 @@ class Util():
         random_file = random.choice(suitable_files)
         wav_file = wavfile.read(join(self.path + self.class_name, random_file))[1]
         wav_file = wav_file[8000:24000]
-        wav_file = wav_file/np.max(np.abs(wav_file),axis=0)
+        #wav_file = wav_file/np.max(np.abs(wav_file),axis=0)
         spec = matplotlib.mlab.specgram(wav_file)[0]
         spec = self.drop_timesteps(spec)
         spec = self.sparse_sample(spec)
+        #spec = self.norm(spec)
         spec = np.transpose(spec)
         return spec
 
@@ -89,6 +90,13 @@ class Util():
 
     def remove_label(self, samples):
         return [samples[i][1] for i in range(len(samples))]
+
+    #z-transformation of the input spectrogram
+    def norm(self, samples):
+        for sample in samples:
+            for freq_spectrum in sample
+                freq_spectrum = (freq_spectrum-np.mean(sample))/np.std(sample)
+            return sample
 
 # util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
 # trainX,trainY,valX,valY,testX,testY = util.generate_batch(100)
