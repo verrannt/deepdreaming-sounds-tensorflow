@@ -67,16 +67,16 @@ class CNN():
     def conv_layer(self, input, name):
         with tf.variable_scope(name):
             shape = self.architecture[name]
-            with tf.namescope('conv_kernel'):
+            with tf.name_scope('conv_kernel'):
                 kernel = self.get_kernel(shape)
                 variable_summaries(kernel)
-            with tf.namescope('convolution')
+            with tf.name_scope('convolution'):
                 conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
                 variable_summaries(conv)
-            with tf.namescope('conv_bias'):
+            with tf.name_scope('conv_bias'):
                 bias = self.get_bias(shape)
                 variable_summaries(bias)
-            with tf.namescope('convolution+bias'):
+            with tf.name_scope('convolution_with_bias'):
                 conv_bias = tf.nn.bias_add(conv, bias)
                 variable_summaries(conv_bias)
             return self.activate(conv_bias)
@@ -89,10 +89,10 @@ class CNN():
                 dim *= d
             x = tf.reshape(input, [-1, dim])
             shape = [dim, self.architecture[name][1]]
-            with tf.namescope('fc_weights'):
+            with tf.name_scope('fc_weights'):
                 weights = self.get_weights(shape)
                 variable_summaries(weights)
-            with tf.namescope('fc_bias'):
+            with tf.name_scope('fc_bias'):
                 bias = self.get_bias(shape)
                 variable_summaries(bias)
             with tf.name_scope('fully_connected'):
