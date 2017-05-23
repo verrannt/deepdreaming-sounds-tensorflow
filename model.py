@@ -13,6 +13,7 @@ class CNN():
     def __init__(self, kernel_size, n_classes):
         # Get the shapes of simplified VGG16 architecture
         self.architecture = Architectures.vgg16_downsized(kernel_size, n_classes)
+        print(self.architecture)
         # Init parameters
         self.x = tf.placeholder(tf.float32, [None, 1024])
         self.yHat = tf.placeholder(tf.float32, [None, n_classes])
@@ -49,7 +50,7 @@ class CNN():
         self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, "float"))
         self.train_step = tf.train.AdamOptimizer(1e-4).minimize(self.cross_entropy)
 
-    def activate(input):
+    def activate(self, input):
         return tf.nn.relu(input)
 
     def max_pool(self, input, name):
@@ -63,7 +64,7 @@ class CNN():
             conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
             bias = self.get_bias(shape)
             conv_bias = tf.nn.bias_add(conv, bias)
-            return activate(conv_bias)
+            return self.activate(conv_bias)
 
     def fc_layer(self, input, name):
         with tf.variable_scope(name):
@@ -87,5 +88,5 @@ class CNN():
             initializer = tf.random_normal_initializer(mean=0,stddev=0.1))
 
     def get_bias(self, shape):
-        return tf.get_variable("bias", shape[:-1],
+        return tf.get_variable("bias", shape[-1],
             initializer = tf.constant_initializer(0.0))
