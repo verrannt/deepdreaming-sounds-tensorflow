@@ -10,13 +10,12 @@ import numpy as np
 from cnn_architectures import Architectures
 
 class CNN():
-    def __init__(self, kernel_size, classes):
+    def __init__(self, kernel_size, n_classes):
         # Get the shapes of simplified VGG16 architecture
-        architecture = Architectures.vgg16_downsized(kernel_size=5,
-                                                     amount_classes=1000)
+        self.architecture = Architectures.vgg16_downsized(kernel_size, n_classes)
         # Init parameters
         self.x = tf.placeholder(tf.float32, [None, 1024])
-        self.yHat = tf.placeholder(tf.float32, [None, classes])
+        self.yHat = tf.placeholder(tf.float32, [None, n_classes])
         self.x_image = tf.reshape(self.x, [-1,32,32,1])
         self.keep_prob = tf.placeholder(tf.float32)
 
@@ -45,10 +44,10 @@ class CNN():
 
         self.y = tf.nn.softmax(self.fc7, name="network_output")
 
-		self.cross_entropy = -tf.reduce_sum(self.yHat*tf.log(tf.clip_by_value(self.y,1e-10,1.0)))
-		self.correct_prediction = tf.equal(tf.argmax(self.y,1), tf.argmax(self.yHat,1))
-		self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, "float"))
-		self.train_step = tf.train.AdamOptimizer(1e-4).minimize(self.cross_entropy)
+        self.cross_entropy = -tf.reduce_sum(self.yHat*tf.log(tf.clip_by_value(self.y,1e-10,1.0)))
+        self.correct_prediction = tf.equal(tf.argmax(self.y,1), tf.argmax(self.yHat,1))
+        self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, "float"))
+        self.train_step = tf.train.AdamOptimizer(1e-4).minimize(self.cross_entropy)
 
     def activate(input):
         return tf.nn.relu(input)
@@ -59,7 +58,7 @@ class CNN():
 
     def conv_layer(self, input, name):
         with tf.variable_scope(name):
-            shape = architecture[name]
+            shape = self.architecture[name]
             kernel = self.get_kernel(shape)
             conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
             bias = self.get_bias(shape)
@@ -70,6 +69,7 @@ class CNN():
         with tf.variable_scope(name):
             shape = input.get_shape().as_list()
             dim = 1
+            # TODO
             for d in shape[1:]:
                 dim *= d
             x = tf.reshape(input, [-1, dim])

@@ -62,6 +62,7 @@ class Util():
         spec = matplotlib.mlab.specgram(wav_file)[0]
         spec = self.drop_timesteps(spec)
         spec = self.sparse_sample(spec)
+        spec = np.transpose(spec)
         return spec
 
     def sparse_sample(self, spec):
