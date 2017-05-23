@@ -10,35 +10,30 @@ import numpy as np
 from cnn_architectures import Architectures
 
 class CNN():
-    def __init__(self, kernel_size, n_classes):
+    def __init__(self, input_shape, kernel_size, n_classes):
         # Get the shapes of simplified VGG16 architecture
         self.architecture = Architectures.vgg16_downsized(kernel_size, n_classes)
-        print(self.architecture)
+
         # Init parameters
-        self.x = tf.placeholder(tf.float32, [None, 1024])
+        input_height, input_width = input_shape
+        self.x = tf.placeholder(tf.float32, [None, input_height, input_width])
         self.yHat = tf.placeholder(tf.float32, [None, n_classes])
-        self.x_image = tf.reshape(self.x, [-1,32,32,1])
+        self.x_image = tf.reshape(self.x, [-1,input_height,input_width,1])
         self.keep_prob = tf.placeholder(tf.float32)
 
         # Data flow graph
         self.conv1_1 = self.conv_layer(self.x_image, "conv1_1")
-        self.pool1 = self.max_pool(self.conv1_1, 'pool1')
-
-        self.conv2_1 = self.conv_layer(self.pool1, "conv2_1")
+        self.conv2_1 = self.conv_layer(self.conv1_1, "conv2_1")
         self.pool2 = self.max_pool(self.conv2_1, 'pool2')
 
         self.conv3_1 = self.conv_layer(self.pool2, "conv3_1")
-        self.pool3 = self.max_pool(self.conv3_1, 'pool3')
-
-        self.conv4_1 = self.conv_layer(self.pool3, "conv4_1")
-        self.pool4 = self.max_pool(self.conv4_1, 'pool4')
-
-        self.conv5_1 = self.conv_layer(self.pool4, "conv5_1")
+        self.conv4_1 = self.conv_layer(self.conv3_1, "conv4_1")
+        self.conv5_1 = self.conv_layer(self.conv4_1, "conv5_1")
         self.pool5 = self.max_pool(self.conv5_1, 'pool5')
 
         self.fc6 = self.fc_layer(self.pool5, "fc6")
         assert self.fc6.get_shape().as_list()[1:] == [4096]
-        self.act6 = activate(self.fc6)
+        self.act6 = self.activate(self.fc6)
         self.act6_dropout = tf.nn.dropout(self.act6, self.keep_prob)
 
         self.fc7 = self.fc_layer(self.act6_dropout, "fc7")
@@ -70,10 +65,10 @@ class CNN():
         with tf.variable_scope(name):
             shape = input.get_shape().as_list()
             dim = 1
-            # TODO
             for d in shape[1:]:
                 dim *= d
             x = tf.reshape(input, [-1, dim])
+            shape = [dim, self.architecture[name][1]]
             weights = self.get_weights(shape)
             bias = self.get_bias(shape)
             fc = tf.nn.bias_add(tf.matmul(x, weights), bias)

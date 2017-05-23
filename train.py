@@ -28,14 +28,13 @@ val_entropies = np.zeros(iterations)
 util = Util(path)
 
 def train(path, iterations, batch_size):
-	model = CNN(kernel_size = 5, n_classes = 9)
+	model = CNN(input_shape = (13,129), kernel_size = 5, n_classes = 9)
 	init = tf.global_variables_initializer()
 	#saver = tf.train.Saver()
 	with tf.Session() as ses:
 		ses.run(init)
 		for i in range(iterations):
-			print("entered for loop")
-			trainX,trainY,valX,valY,testX,testY = Util.generate_batch(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch(batch_size)
 			train_accuracies[i], train_entropies[i], _ = ses.run(
 				[model.accuracy, model.cross_entropy, model.train_step],
 				feed_dict = {model.x:trainX, model.yHat:trainY, model.keep_prob:0.5})

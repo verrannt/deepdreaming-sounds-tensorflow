@@ -92,7 +92,7 @@ class Util():
 
 # util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
 # trainX,trainY,valX,valY,testX,testY = util.generate_batch(100)
-# print(trainX[0])
+# print(trainX[0].shape)
 # print(type(trainX))
 # print(type(trainX[0]))
 # print(len(trainX[0][0]),len(valX))
