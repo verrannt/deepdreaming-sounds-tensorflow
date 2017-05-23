@@ -9,6 +9,18 @@ import tensorflow as tf
 import numpy as np
 from cnn_architectures import Architectures
 
+def variable_summaries(var):
+    """Attach a lot of summaries to a Tensor (for TensorBoard visualization)."""
+    with tf.name_scope('summaries'):
+        mean = tf.reduce_mean(var)
+    tf.summary.scalar('mean', mean)
+    with tf.name_scope('stddev'):
+        stddev = tf.sqrt(tf.reduce_mean(tf.square(var - mean)))
+    tf.summary.scalar('stddev', stddev)
+    tf.summary.scalar('max', tf.reduce_max(var))
+    tf.summary.scalar('min', tf.reduce_min(var))
+    tf.summary.histogram('histogram', var)
+
 class CNN():
     def __init__(self, input_shape, kernel_size, n_classes):
         # Get the shapes of simplified VGG16 architecture
@@ -55,10 +67,18 @@ class CNN():
     def conv_layer(self, input, name):
         with tf.variable_scope(name):
             shape = self.architecture[name]
-            kernel = self.get_kernel(shape)
-            conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
-            bias = self.get_bias(shape)
-            conv_bias = tf.nn.bias_add(conv, bias)
+            with tf.namescope('conv_kernel'):
+                kernel = self.get_kernel(shape)
+                variable_summaries(kernel)
+            with tf.namescope('convolution')
+                conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
+                variable_summaries(conv)
+            with tf.namescope('conv_bias'):
+                bias = self.get_bias(shape)
+                variable_summaries(bias)
+            with tf.namescope('convolution+bias'):
+                conv_bias = tf.nn.bias_add(conv, bias)
+                variable_summaries(conv_bias)
             return self.activate(conv_bias)
 
     def fc_layer(self, input, name):
@@ -69,9 +89,15 @@ class CNN():
                 dim *= d
             x = tf.reshape(input, [-1, dim])
             shape = [dim, self.architecture[name][1]]
-            weights = self.get_weights(shape)
-            bias = self.get_bias(shape)
-            fc = tf.nn.bias_add(tf.matmul(x, weights), bias)
+            with tf.namescope('fc_weights'):
+                weights = self.get_weights(shape)
+                variable_summaries(weights)
+            with tf.namescope('fc_bias'):
+                bias = self.get_bias(shape)
+                variable_summaries(bias)
+            with tf.name_scope('fully_connected'):
+                fc = tf.nn.bias_add(tf.matmul(x, weights), bias)
+                variable_summaries(fc)
             return fc
 
     def get_kernel(self, shape):
