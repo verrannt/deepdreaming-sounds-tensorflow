@@ -32,7 +32,7 @@ def train(path, iterations, batch_size):
 	init = tf.global_variables_initializer()
 	#saver = tf.train.Saver()
 	with tf.Session() as ses:
-		writer = tf.summary.FileWriter(logdir="./tensorboard/logs")
+		writer = tf.summary.FileWriter(logdir="./logs/tensorboard")
 		ses.run(init)
 		for i in range(iterations):
 			trainX,trainY,valX,valY,testX,testY = util.generate_batch(batch_size)
