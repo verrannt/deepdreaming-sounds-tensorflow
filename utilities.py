@@ -62,8 +62,8 @@ class Util():
         spec = matplotlib.mlab.specgram(wav_file)[0]
         spec = self.drop_timesteps(spec)
         spec = self.sparse_sample(spec)
-        #spec = self.norm(spec)
-        spec = np.transpose(spec)
+        spec = self.norm(spec)
+        #spec = np.transpose(spec)
         return spec
 
     def sparse_sample(self, spec):
@@ -92,11 +92,15 @@ class Util():
         return [samples[i][1] for i in range(len(samples))]
 
     #z-transformation of the input spectrogram
-    def norm(self, samples):
-        for sample in samples:
-            for freq_spectrum in sample
-                freq_spectrum = (freq_spectrum-np.mean(sample))/np.std(sample)
-            return sample
+    def norm(self, spec):
+        spec_norm = (spec - np.mean(spec) / np.std(spec))
+        # for freq in spec:
+        #     for i in range(len(freq)):
+        #         freq[i] - np.mean
+        #     spec_norm.append([freq[i] for i in range(len(freq)))
+        #     for freq_spectrum in sample:
+        #         freq_spectrum = (freq_spectrum-np.mean(sample))/np.std(sample)
+        return spec_norm
 
 # util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
 # trainX,trainY,valX,valY,testX,testY = util.generate_batch(100)
