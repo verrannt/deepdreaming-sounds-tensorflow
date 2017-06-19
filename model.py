@@ -131,4 +131,4 @@ class CNN():
     def get_bias(self, shape):
         # original stddev 0.1
         return tf.get_variable("bias", shape[-1],
-            initializer =  tf.random_normal_initializer(mean=0,stddev=0.001))
+            initializer =  tf.constant_initializer(1))
