@@ -20,7 +20,6 @@ def variable_summaries(var):
         tf.summary.scalar('max', tf.reduce_max(var))
         tf.summary.scalar('min', tf.reduce_min(var))
         tf.summary.histogram('histogram', var)
-    print("I visited variable_summaries")
 
 class CNN():
 
@@ -70,14 +69,15 @@ class CNN():
                 self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, "float"))
         tf.summary.scalar('accuracy', self.accuracy)
 
-        # Merge all the summaries and write them out to /tensorboard/logs
+        # Merge all the summaries
         self.merged = tf.summary.merge_all()
 
-        #original leaning rate : 1e-4
+        # original leaning rate : 1e-4
         self.train_step = tf.train.AdamOptimizer(0.1).minimize(self.cross_entropy)
 
     def activate(self, input):
         # return tf.nn.relu(input)
+        # Leaky ReLU
         leak = 0.2
         f1 = 0.5 * (1 + leak)
         f2 = 0.5 * (1 - leak)
@@ -124,10 +124,11 @@ class CNN():
             return fc
 
     def get_weights(self, name, shape):
+        # original stddev 0.1
         return tf.get_variable(name, shape,
-        #stddev 0.1
             initializer = tf.random_normal_initializer(mean=0,stddev=0.3))
 
     def get_bias(self, shape):
+        # original stddev 0.1
         return tf.get_variable("bias", shape[-1],
             initializer =  tf.random_normal_initializer(mean=0,stddev=0.001))
