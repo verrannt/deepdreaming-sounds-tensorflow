@@ -22,7 +22,7 @@ class Util():
         assert samples_per_class <= 120, "Too many samples per class, max 120. \
             Reduce batch size!"
 
-        trainX, valX, testX = [[] for _ in range(3)]
+        trainX, valX, testX = [], [], []
         train_size = samples_per_class
         val_size  = int(0.3*train_size) # [int(samples_per_class*i) for i in [0.6, 0.2, 0.2]]
         test_size = int(0.3*train_size)
