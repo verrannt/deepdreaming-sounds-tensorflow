@@ -11,7 +11,7 @@ from model import CNN
 
 if len(sys.argv) == 1:
 	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
-	n_iterations = 1000
+	n_iterations = 5000
 	batch_size = 100
 else:
 	args = sys.argv
