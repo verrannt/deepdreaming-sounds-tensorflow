@@ -43,8 +43,7 @@ class CNN():
 
         self.conv3 = self.conv_layer(self.pool2_dropout, "conv3")
         self.conv4 = self.conv_layer(self.conv3, "conv4")
-        self.conv4_1 = self.conv_layer(self.conv4, "conv4_1")
-        self.pool4 = self.max_pool(self.conv4_1, "pool4")
+        self.pool4 = self.max_pool(self.conv4, "pool4")
 
         # self.conv5 = self.conv_layer(self.pool4, "conv5")
         # self.conv5_1 = self.conv_layer(self.conv5, "conv5_1")
