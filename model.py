@@ -25,8 +25,8 @@ class CNN():
 
     def __init__(self, input_shape, kernel_size, n_classes):
         # Get shapes for the layers
-        self.architecture = Architectures.xsmall(kernel_size, n_classes)
-        self.learning_rate = 0.01
+        self.architecture = Architectures.fat_shallow(kernel_size, n_classes)
+        self.learning_rate = 0.03
 
         # Init parameters
         input_height, input_width = input_shape
@@ -43,12 +43,19 @@ class CNN():
 
         self.conv3 = self.conv_layer(self.pool2_dropout, "conv3")
         self.conv4 = self.conv_layer(self.conv3, "conv4")
-        self.pool4 = self.max_pool(self.conv4, "pool4")
+        self.conv4_1 = self.conv_layer(self.conv4, "conv4_1")
+        self.pool4 = self.max_pool(self.conv4_1, "pool4")
+
+        # self.conv5 = self.conv_layer(self.pool4, "conv5")
+        # self.conv5_1 = self.conv_layer(self.conv5, "conv5_1")
+        # self.conv5_2 = self.conv_layer(self.conv5_1, "conv5_2")
+
         self.flat = self.flatten(self.pool4)
 
         self.fc1 = self.activate(self.fc_layer(self.flat, "fc1"))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
-        self.fc2 = self.fc_layer(self.fc1_dropout, "fc2")
+        self.fc1_1 = self.fc_layer(self.fc1_dropout, "fc1_1")
+        self.fc2 = self.fc_layer(self.fc1_1, "fc2")
         # self.output = tf.nn.softmax(self.fc7, name="network_output")
         self.output = self.fc2
 
@@ -121,7 +128,7 @@ class CNN():
     def get_weights(self, name, shape):
         # original stddev 0.1
         return tf.get_variable(name, shape,
-            initializer = tf.random_normal_initializer(mean=0,stddev=0.1))
+            initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 
     def get_bias(self, shape):
         return tf.get_variable("bias", shape[-1],

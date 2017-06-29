@@ -9,10 +9,36 @@ class Architectures():
                 'conv3' : [kernel_size, kernel_size, 64, 128],
                 'conv4' : [kernel_size, kernel_size, 128, 128],
                 'conv5' : [kernel_size, kernel_size, 128, 128],
-                'conv5_1' : [kernel_size, kernel_size, 256, 512],
-                'conv5_2' : [kernel_size, kernel_size, 512, 512],
+                'conv5_1' : [kernel_size, kernel_size, 128, 256],
+                'conv5_2' : [kernel_size, kernel_size, 256, 256],
                 'fc1' : [0, 2048],
-                'fc2' : [2048, n_classes]}
+                'fc2' : [2048, n_classes],
+                }
+
+    def fat_shallow(kernel_size, n_classes):
+        return {'conv1' : [kernel_size, kernel_size, 1, 64],
+                'conv2' : [kernel_size, kernel_size, 64, 128],
+                'conv3' : [kernel_size, kernel_size, 128, 256],
+                'conv4' : [kernel_size, kernel_size, 256, 256],
+                'conv4_1' : [kernel_size, kernel_size, 256, 512],
+                'fc1' : [0, 2048],
+                'fc1_1' : [2048, 2048],
+                'fc2' : [2048, n_classes],
+                }
+
+    def slim_deep(kernel_size, n_classes):
+        return {'conv1' : [kernel_size, kernel_size, 1, 32],
+                'conv2' : [kernel_size, kernel_size, 32, 64],
+                'conv3' : [kernel_size, kernel_size, 64, 64],
+                'conv4' : [kernel_size, kernel_size, 64, 64],
+                'conv5' : [kernel_size, kernel_size, 64, 64],
+                'conv6' : [kernel_size, kernel_size, 64, 64],
+                'conv7' : [kernel_size, kernel_size, 64, 64],
+                'conv8' : [kernel_size, kernel_size, 64, 64],
+                'conv9' : [kernel_size, kernel_size, 64, 64],
+                'fc1' : [0, 2048],
+                'fc2' : [2048, n_classes],
+                }
 
     def vgg16_skipped(kernel_size, n_classes):
         return {'conv1_1' : [kernel_size, kernel_size, 1, 64],
