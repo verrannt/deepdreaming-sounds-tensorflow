@@ -11,7 +11,8 @@ from model import CNN
 
 if len(sys.argv) == 1:
 	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
-	n_iterations = 5000
+	# path = "./input/"
+	n_iterations = 10000
 	batch_size = 100
 else:
 	args = sys.argv
@@ -49,9 +50,10 @@ def train_urbansound(path, n_iterations, batch_size):
 	''' Train and test network on UrbanSound8k dataset '''
 	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
 	init = tf.global_variables_initializer()
-	# saver = tf.train.Saver()
+	saver = tf.train.Saver()
 	with tf.Session() as ses:
 		ses.run(init)
+		# "../TF_CNN_SoundVis_logs/tensorboard/urbansound
 		writer = tf.summary.FileWriter(logdir="../TF_CNN_SoundVis_logs/tensorboard/urbansound", graph=ses.graph)
 		for i in range(n_iterations):
 			trainX,trainY,valX,valY,testX,testY = util.generate_batch(batch_size)
@@ -65,7 +67,7 @@ def train_urbansound(path, n_iterations, batch_size):
 					model.accuracy,
 					feed_dict = {model.x:valX, model.labels:valY, model.keep_prob:1.0})
 				print("Step %d -- Validate accuracy: %g"%(i, val_acc))
-		# saver.save(ses, "../soundvis_saved_weights/model.ckpt")
+		saver.save(ses, "./weights/weights.ckpt")
 		test_acc = ses.run(
 			model.accuracy,
 			feed_dict={model.x:testX, model.labels:testY, model.keep_prob:1.0})

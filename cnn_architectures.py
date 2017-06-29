@@ -19,7 +19,7 @@ class Architectures():
         return {'conv1' : [kernel_size, kernel_size, 1, 64],
                 'conv2' : [kernel_size, kernel_size, 64, 128],
                 'conv3' : [kernel_size, kernel_size, 128, 256],
-                'conv4' : [kernel_size, kernel_size, 256, 256],
+                'conv4' : [kernel_size, kernel_size, 256, 512],
                 'conv4_1' : [kernel_size, kernel_size, 256, 512],
                 'fc1' : [0, 2048],
                 'fc1_1' : [2048, 2048],
