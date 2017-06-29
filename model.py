@@ -103,7 +103,7 @@ class CNN():
                 conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
                 variable_summaries(conv)
             with tf.name_scope('conv_bias'):
-                bias = self.get_bias(shape)
+                bias = self.get_conv_bias(shape)
                 variable_summaries(bias)
             with tf.name_scope('convolution_with_bias'):
                 conv_bias = tf.nn.bias_add(conv, bias)
@@ -118,7 +118,7 @@ class CNN():
                 weights = self.get_weights("weights", shape)
                 variable_summaries(weights)
             with tf.name_scope('fc_bias'):
-                bias = self.get_bias(shape)
+                bias = self.get_fc_bias(shape)
                 variable_summaries(bias)
             with tf.name_scope('fully_connected'):
                 fc = tf.nn.bias_add(tf.matmul(input, weights), bias)
@@ -130,6 +130,10 @@ class CNN():
         return tf.get_variable(name, shape,
             initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 
-    def get_bias(self, shape):
+    def get_conv_bias(self, shape):
         return tf.get_variable("bias", shape[-1],
-            initializer =  tf.constant_initializer(0.1))
+            initializer =  tf.random_normal_initializer(mean=0,stddev=1.0)) #tf.constant_initializer(0.1))
+
+    def get_fc_bias(self, shape):
+        return tf.get_variable("bias", shape[-1],
+            initializer =  tf.random_normal_initializer(mean=0,stddev=10.0))
