@@ -158,11 +158,11 @@ class Util():
         #         freq_spectrum = (freq_spectrum-np.mean(sample))/np.std(sample)
         return spec_norm
 
-util = Util("../TrainingData/UrbanSound8K_modified_v2/audio/")
-import os
-os.getcwd()
-trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(100)
-print(trainX[0].shape)
-print(type(trainX))
-print(type(trainX[0]))
-print(len(trainX[0][0]),len(valX))
+# util = Util("../TrainingData/UrbanSound8K_modified_v2/pickle/")
+# import os
+# os.getcwd()
+# trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(100)
+# print(trainX[0].shape)
+# print(type(trainX))
+# print(type(trainX[0]))
+# print(len(trainX[0][0]),len(valX))

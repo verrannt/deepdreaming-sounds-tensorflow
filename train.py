@@ -10,7 +10,7 @@ from utilities import Util
 from model import CNN
 
 if len(sys.argv) == 1:
-	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
+	path = "../TrainingData/UrbanSound8K_modified_v2/pickle/"
 	# path = "./input/"
 	n_iterations = 10000
 	batch_size = 100
@@ -54,7 +54,7 @@ def train_urbansound(path, n_iterations, batch_size):
 	with tf.Session() as ses:
 		ses.run(init)
 		# "../TF_CNN_SoundVis_logs/tensorboard/urbansound
-		writer = tf.summary.FileWriter(logdir="../TF_CNN_SoundVis_logs/tensorboard/urbansound", graph=ses.graph)
+		writer = tf.summary.FileWriter(logdir="./tensorboard", graph=ses.graph)
 		for i in range(n_iterations):
 			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
 			train_acc, summary, _ = ses.run(
