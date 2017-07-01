@@ -4,7 +4,7 @@ import random
 import sys
 
 if len(sys.argv) != 5:
-	print("Please use as 'python shuffle_files.py mode path training_samples validation_samples'")
+	print("Usage: 'python shuffle_files.py mode path training_samples validation_samples'")
 	exit(1)
 
 mode = sys.argv[1]

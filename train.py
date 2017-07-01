@@ -56,7 +56,7 @@ def train_urbansound(path, n_iterations, batch_size):
 		# "../TF_CNN_SoundVis_logs/tensorboard/urbansound
 		writer = tf.summary.FileWriter(logdir="../TF_CNN_SoundVis_logs/tensorboard/urbansound", graph=ses.graph)
 		for i in range(n_iterations):
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
 			train_acc, summary, _ = ses.run(
 				[model.accuracy, model.merged, model.train_step],
 				feed_dict = {model.x:trainX, model.labels:trainY, model.keep_prob:0.7})
