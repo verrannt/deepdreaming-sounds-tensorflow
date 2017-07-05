@@ -53,8 +53,7 @@ class CNN():
 
         self.fc1 = self.activate(self.fc_layer(self.flat, "fc1"))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
-        self.fc1_1 = self.fc_layer(self.fc1_dropout, "fc1_1")
-        self.fc2 = self.fc_layer(self.fc1_1, "fc2")
+        self.fc2 = self.fc_layer(self.fc1_dropout, "fc2")
         # self.output = tf.nn.softmax(self.fc7, name="network_output")
         self.output = self.fc2
 
@@ -131,8 +130,8 @@ class CNN():
 
     def get_conv_bias(self, shape):
         return tf.get_variable("bias", shape[-1],
-            initializer =  tf.random_normal_initializer(mean=0,stddev=1.0)) #tf.constant_initializer(0.1))
+            initializer =  tf.random_normal_initializer(tf.constant_initializer(0.1))
 
     def get_fc_bias(self, shape):
         return tf.get_variable("bias", shape[-1],
-            initializer =  tf.random_normal_initializer(mean=0,stddev=10.0))
+            initializer =  tf.random_normal_initializer(tf.constant_initializer(0.1))

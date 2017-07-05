@@ -10,7 +10,7 @@ from utilities import Util
 from model import CNN
 
 if len(sys.argv) == 1:
-	path = "../TrainingData/UrbanSound8K_modified_v2/pickle/"
+	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 	# path = "./input/"
 	n_iterations = 10000
 	batch_size = 100
@@ -51,12 +51,14 @@ def train_urbansound(path, n_iterations, batch_size):
 	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
 	init = tf.global_variables_initializer()
 	saver = tf.train.Saver()
+
 	with tf.Session() as ses:
 		ses.run(init)
 		# "../TF_CNN_SoundVis_logs/tensorboard/urbansound
 		writer = tf.summary.FileWriter(logdir="./tensorboard", graph=ses.graph)
+		tf.train.write_graph(model, './weights','the_graph.pb')
 		for i in range(n_iterations):
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
 			train_acc, summary, _ = ses.run(
 				[model.accuracy, model.merged, model.train_step],
 				feed_dict = {model.x:trainX, model.labels:trainY, model.keep_prob:0.7})
@@ -67,7 +69,9 @@ def train_urbansound(path, n_iterations, batch_size):
 					model.accuracy,
 					feed_dict = {model.x:valX, model.labels:valY, model.keep_prob:1.0})
 				print("Step %d -- Validate accuracy: %g"%(i, val_acc))
-		saver.save(ses, "./weights/weights.ckpt")
+				saver.save(ses, "./weights/weights.ckpt")
+
+
 		test_acc = ses.run(
 			model.accuracy,
 			feed_dict={model.x:testX, model.labels:testY, model.keep_prob:1.0})
