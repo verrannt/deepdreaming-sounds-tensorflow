@@ -4,7 +4,7 @@ Up until now there has been a lot of work using Google's Deepdream algorithm to 
 
 ### Progress
 
-The project is currently a __work in progress__. So far, training accuracies reach about 70 %. The Deepdream algorithm is yet to be applied.
+This project is currently a __work in progress__. So far, training accuracies reach about 70 %. The Deepdream algorithm is yet to be applied.
 
 ### Dataset
 
@@ -22,9 +22,9 @@ To get an overview over the files in this repository, here is a short descriptio
 
 ### Network Architecture
 
-We used a convolutional neural network five convolutional, two pooling, two dropout and three feed-forward layers. The graph looks as follows:
+We used a convolutional neural network with five convolutional, two pooling, two dropout and three feed-forward layers. The graph looks as follows:
 
-![Alt text](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/images/graph_2017-06-27_r1.png)
+![Network graph](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/images/graph_2017-06-27_r1.png)
 
 ### Usage
 
