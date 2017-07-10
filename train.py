@@ -10,8 +10,8 @@ from utilities import Util
 from model import CNN
 
 if len(sys.argv) == 1:
-	path = "../TrainingData/UrbanSound8K_modified_v2/pickle/"
-	# path = "./input/"
+	# path = "../TrainingData/UrbanSound8K_modified_v2/pickle/"
+	path = "/input/"
 	n_iterations = 10000
 	batch_size = 100
 else:
