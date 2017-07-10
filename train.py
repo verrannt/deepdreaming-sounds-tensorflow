@@ -2,6 +2,8 @@ import tensorflow as tf
 import scipy.io.wavfile
 import numpy as np
 import matplotlib.mlab
+import urllib.request
+import zipfile
 from os import listdir
 from os.path import isfile, join
 import sys
@@ -9,16 +11,35 @@ import sys
 from utilities import Util
 from model import CNN
 
+dir_content = listdir()
+if not 'urbansound.pkl' in dir_content:
+	url = 'http://www.blog.pythonlibrary.org/wp-content/uploads/2012/06/wxDbViewer.zip'#'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
+	print("Dataset not found. Downloading 468MB, please wait ...")
+	urllib.request.urlretrieve(url, "./UrbanSound8K_modified/urbansound.zip")
+	zip_ref = zipfile.ZipFile("./UrbanSound8K_modified/urbansound.zip", 'r')
+	zip_ref.extractall("./UrbanSound8K_modified/")
+	zip_ref.close()
+	os.remove("./UrbanSound8K_modified/urbansound.zip")
+
+args = sys.argv
 if len(sys.argv) == 1:
-	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
+	# path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 	# path = "./input/"
-	n_iterations = 10000
+	n_iterations = 5000
 	batch_size = 100
+	path = "./UrbanSound8K_modified/urbansound.pkl"
+elif len(sys.argv) == 2:
+	n_iterations = int(args[1])
+	batch_size = 100
+	path = "./UrbanSound8K_modified/urbansound.pkl"
+elif len(sys.argv) == 3:
+	n_iterations = int(args[1])
+	batch_size = int(args[2])
+	path = "./UrbanSound8K_modified/urbansound.pkl"
 else:
-	args = sys.argv
-	path = str(args[1])
-	n_iterations = int(args[2])
-	batch_size = int(args[3])
+	n_iterations = int(args[1])
+	batch_size = int(args[2])
+	path = str(args[3])
 
 val_step = 10
 util = Util(path)
@@ -58,7 +79,8 @@ def train_urbansound(path, n_iterations, batch_size):
 		writer = tf.summary.FileWriter(logdir="./tensorboard", graph=ses.graph)
 		tf.train.write_graph(model, './weights','the_graph.pb')
 		for i in range(n_iterations):
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
+			# trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
 			train_acc, summary, _ = ses.run(
 				[model.accuracy, model.merged, model.train_step],
 				feed_dict = {model.x:trainX, model.labels:trainY, model.keep_prob:0.7})

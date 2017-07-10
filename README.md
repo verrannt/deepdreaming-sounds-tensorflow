@@ -1,6 +1,53 @@
-# CNN Sound Visualization
+# Deep Dreaming Sounds In Tensorflow
 
-Attempt to visualize layers/learned representations of CNN trained on sound data using DeepDream approaches. Current __work in progress__.
+Up until now there has been a lot of work using Google's Deepdream algorithm to visualize the internal representations of artificial neural networks. But to the best of our knowledge, there has not been any work with neural networks trained on sound data instead of image data. In this project we trained a convolutional neural network on sound data in order to apply the Deepdream algorithm to it.
+
+### Progress
+
+The project is currently a __work in progress__. So far, training accuracies reach about 70 %. The Deepdream algorithm is yet to be applied.
+
+### Dataset
+
+We used the [UrbanSound8K dataset](https://serv.cusp.nyu.edu/projects/urbansounddataset/urbansound8k.html) compiled by NYU researchers Justin Salamon, Christopher Jacoby and Juan Pablo Bello that we slightly modified ourselves. A thorough description of the dataset and the modifications can be found in the [UrbanSound8K_README](./UrbanSound8K_modified/UrbanSound8K_README.txt).
+
+### File descriptions
+
+To get an overview over the files in this repository, here is a short description:
+
++ __datatools__ includes several python and shell scripts we wrote for the modification of the dataset. Since the compiling of the dataset is finished these are not necessary for the training/Deepdream procedure and have been included for completeness only.
++ __images__ includes images used in this readme and some infographics about our current progress.
++ __UrbanSound8K_modified__ includes the readme file for the modified dataset and credits to [freesound.org](https://freesound.org). The pickled dataset will also be stored in this directory (more on that under #Usage).
++ __train.py__ is the main file for training the network. It imports __utilities.py__ which is responsible for creating appropriate training, testing and validation batches from the dataset as well as the Tensorflow implementation of a CNN that we wrote in __model.py__. The batches then will be fed into the model in order to train it on the data.
++ __cnn_architectures.py__ contains a simple helper class that returns python dicitonaries describing the shapes of the different neural network layers to ease playing around with different architectures.
+
+### Network Architecture
+
+We used a convolutional neural network five convolutional, two pooling, two dropout and three feed-forward layers. The graph looks as follows:
+
+![Alt text](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/images/graph_2017-06-27_r1.png)
+
+### Usage
+
+The following additional python libraries are needed:
++ tensorflow
++ scipy
++ numpy
++ matplotlib
++ pickle
++ urllib
++ random
+
+In order to train the network, navigate to the directory you cloned the repository in. From there, you need to run _train.py_ using an installation of Python 3. _train.py_ will check if you have the pickled dataset already downloaded and if not download it for you using urllib and save it in your current directory under *"./UrbanSound8K_modified/urbansound.pkl"*. Furthermore, you can specify the number of iterations, batch size and path to the dataset with sys arguments.
+
+    python3 train.py 'number_of_iterations' 'batch_size' 'path'
+
+Appropriate usages are to either give only the first sys argument, the first two, all three or none at all. The defaults for arguments not given are:
+
+    number_of_iterations = 5000
+    batch_size = 100
+    path = "./UrbanSound8K_modified/urbansound.pkl"
+
+---
 
 Github repositories used so far:
 + [sound-cnn](https://github.com/awjuliani/sound-cnn): Simple CNN used for classifying sound data
