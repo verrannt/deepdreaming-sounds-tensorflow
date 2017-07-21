@@ -39,13 +39,17 @@ The following additional python libraries are needed:
 
 In order to train the network, navigate to the directory you cloned the repository in. From there, you need to run _train.py_ using an installation of Python 3. _train.py_ will check if you have the pickled dataset already downloaded and if not download it for you using urllib and save it in your current directory under *"./UrbanSound8K_modified/urbansound.pkl"*. Furthermore, you can specify the number of iterations, batch size and path to the dataset with sys arguments.
 
-    python3 train.py 'number_of_iterations' 'batch_size' 'path'
+```python
+python3 train.py 'number_of_iterations' 'batch_size' 'path'
+```
 
 Appropriate usages are to either give only the first sys argument, the first two, all three or none at all. The defaults for arguments not given are:
 
+```python
     number_of_iterations = 5000
     batch_size = 100
     path = "./UrbanSound8K_modified/urbansound.pkl"
+```
 
 ---
 

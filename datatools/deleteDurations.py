@@ -1,3 +1,10 @@
+'''
+Splits dataset into samples of specified duration (we used 4 seconds) and
+puts all samples not of this duration into seperate directory
+
+@date 2017-05-19
+'''
+
 import os
 import wave
 import sys

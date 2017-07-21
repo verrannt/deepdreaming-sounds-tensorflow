@@ -1,3 +1,11 @@
+'''
+Plots a histogram showing the durations of the sound sampled.
+This script was written to verify that the vast majority of sound samples
+was exactly 4s of length (>95%).
+
+@date 2017-05-19
+'''
+
 import wave
 import contextlib
 import sys

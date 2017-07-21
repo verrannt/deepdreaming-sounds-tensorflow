@@ -1,13 +1,11 @@
-# % ------------------------------------------------------------------------- %
+'''
+Simple script that reads .wav-files from the UrbanSound8K_modified_v2 dataset
+into a python array using scipy's wavfile library and stores them in three
+labeled python arrays for TRAINING, VALIDATION, and TESTING. Then it exports
+these using pickle.
 
-# Simple script that reads .wav-files from the UrbanSound8K_modified_v2 dataset
-# into a python array using scipy's wavfile library and stores them in three
-# labeled python arrays for TRAINING, VALIDATION, and TESTING. Then it exports
-# these using pickle.
-
-# @date 2017-07-01
-
-# % ------------------------------------------------------------------------- %
+@date 2017-07-01
+'''
 
 import sys
 import pickle

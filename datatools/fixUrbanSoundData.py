@@ -1,6 +1,6 @@
 '''
 We needed to fix the structure of the directory containing the Urban Sound Data,
-since the folder structure was not according to the class labeling
+since the folder structure was not according to the class labeling.s
 
 **IMPORTANT NOTE**: In order for this script to work, the files need to already
 be extracted from the random folder architecture so that this script runs in a

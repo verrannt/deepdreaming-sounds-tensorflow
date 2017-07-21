@@ -24,11 +24,9 @@ class WavSnipper:
 		length and stores them in the specified store directory
 		'''
 		# check if subdirectory exists
-		if not os.path.exists("{}/{}".format(self.file_directory,
-											 self.store_directory)):
+		if not os.path.exists("{}/{}".format(self.file_directory, self.store_directory)):
 			# if not the case, create it
-			os.makedirs("{}/{}".format(self.file_directory,
-									   self.store_directory))
+			os.makedirs("{}/{}".format(self.file_directory, self.store_directory))
 			# iterate through all elements contained in the directory
 			for file_name in self.file_list:
 				# get file type of element
@@ -37,8 +35,7 @@ class WavSnipper:
 				if file_type == "wav":
 					# and call the following function to split the audio file
 					try:
-						self.split_into_segments(
-							file_name=file_name, export_name="musicdata")
+						self.split_into_segments(file_name=file_name, export_name="musicdata")
 					# fetch exception if it is a directory, not an audio file
 					except IsADirectoryError:
 						print("{} is a directory, not an audio file".format(file_name))
