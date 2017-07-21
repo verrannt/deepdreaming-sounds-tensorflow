@@ -46,9 +46,9 @@ python3 train.py 'number_of_iterations' 'batch_size' 'path'
 Appropriate usages are to either give only the first sys argument, the first two, all three or none at all. The defaults for arguments not given are:
 
 ```python
-    number_of_iterations = 5000
-    batch_size = 100
-    path = "./UrbanSound8K_modified/urbansound.pkl"
+number_of_iterations = 5000
+batch_size = 100
+path = "./UrbanSound8K_modified/urbansound.pkl"
 ```
 
 ---
