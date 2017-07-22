@@ -1,3 +1,4 @@
 # FLOYDHUB FILES #
 #################
-.floyd*
+.floydignore
+.floydexpt
