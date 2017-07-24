@@ -26,7 +26,7 @@ if not 'urbansound.pkl' in dir_content:
 # if not given, use standard values
 args = sys.argv
 if len(sys.argv) == 1:
-	n_iterations = 5000
+	n_iterations = 50000
 	batch_size = 100
 	path = "./UrbanSound8K_modified/urbansound.pkl"
 elif len(sys.argv) == 2:
