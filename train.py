@@ -28,7 +28,8 @@ args = sys.argv
 if len(sys.argv) == 1:
 	n_iterations = 50000
 	batch_size = 100
-	path = "./UrbanSound8K_modified/urbansound.pkl"
+	# path = "./UrbanSound8K_modified/urbansound.pkl"
+	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 elif len(sys.argv) == 2:
 	n_iterations = int(args[1])
 	batch_size = 100
@@ -66,7 +67,8 @@ def train(path, n_iterations, batch_size):
 
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
+			# to generate the batch from wav files or the pickle file
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
 
 			# Training step
 			train_acc, summary, _ = ses.run(
