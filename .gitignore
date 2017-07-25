@@ -5,3 +5,6 @@
 # LOG FILES #
 logs
 __pycache__
+
+# DATASET #
+UrbanSound8K_modified/urbansound.pkl
