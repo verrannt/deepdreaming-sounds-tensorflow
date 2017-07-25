@@ -37,9 +37,11 @@ The following additional python libraries are needed:
 + urllib
 + random
 
+#### Training
+
 In order to train the network, navigate to the directory you cloned the repository in. From there, you need to run _train.py_ using an installation of Python 3. _train.py_ will check if you have the pickled dataset already downloaded and if not download it for you using urllib and save it in your current directory under *"./UrbanSound8K_modified/urbansound.pkl"*. Furthermore, you can specify the number of iterations, batch size and path to the dataset with sys arguments.
 
-```python
+```bash
 python3 train.py 'number_of_iterations' 'batch_size' 'path'
 ```
 
@@ -50,6 +52,15 @@ number_of_iterations = 5000
 batch_size = 100
 path = "./UrbanSound8K_modified/urbansound.pkl"
 ```
+
+#### Dreaming Deep
+
+To visualize layers of the network, we first need a valid protobuf file that contains both the network structure (the meta graph) and the saved weights. To obtain such a file use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. The usage is as follows:
+
+```bash
+python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --output_graph logs/model/output.pb --output_node_names output_node
+```
+
 
 ---
 
