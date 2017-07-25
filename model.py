@@ -12,10 +12,10 @@ from cnn_architectures import Architectures
 
 class CNN():
 
-    def __init__(self, input_shape, kernel_size, n_classes):
+    def __init__(self, input_shape, kernel_size, n_classes, learning_rate):
         # Get shapes for the layers
         self.architecture = Architectures.fat_shallow(kernel_size, n_classes)
-        self.learning_rate = 0.01
+        self.learning_rate = learning_rate
 
         # Init parameters
         input_height, input_width = input_shape

@@ -53,8 +53,11 @@ def train(path, n_iterations, batch_size):
 	'''
 	Train and test network on modified UrbanSound8k dataset
 	'''
+	# Base learning rate
+	learning_rate = 0.01
 	# Initialize the model specified in the model.py file
-	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
+	model = CNN(input_shape = (129, 13), kernel_size = 3,
+		n_classes = 9, learning_rate = learning_rate) # changed Transposed here
 	# Initialize saver class
 	saver = tf.train.Saver(tf.trainable_variables())
 
@@ -64,9 +67,7 @@ def train(path, n_iterations, batch_size):
 		# Initialize writer for tensorboard summaries
 		writer = tf.summary.FileWriter(logdir="logs/tensorboard", graph=ses.graph)
 		# Initialize proto to save graph
-		tf.train.write_graph(ses.graph_def, 'logs/model','graph.pb')
-		# Base learning rate
-		learning_rate = 0.01
+		tf.train.write_graph(ses.graph_def, 'logs/model', 'graph.pb')
 
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
@@ -79,6 +80,14 @@ def train(path, n_iterations, batch_size):
 				feed_dict = {model.x:trainX, model.labels:trainY,
 					model.keep_prob:0.5, model.learning_rate:learning_rate})
 			print("Step %d -- Training accuracy: %g"%(i, train_acc))
+
+			# Dynamic learning rate: collect last 200 training accuracies,
+			# if their mean is above 70%, reduce the learning rate to 0.0001
+			accuracies.append(train_acc)
+			if len(accuracies) > 200:
+				accuracies.pop(0)
+			if np.mean(l) > 0.7:
+				learning_rate = 0.0001
 
 			# Validation step
 			if i % val_step == 0:
