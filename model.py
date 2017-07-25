@@ -129,9 +129,9 @@ class CNN():
             initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 
     def get_conv_bias(self, shape):
-        return tf.get_variable("bias", shape[-1],
-            initializer =  tf.random_normal_initializer(tf.constant_initializer(0.1))
+        return tf.get_variable("conv_bias", shape[-1],
+            initializer = tf.constant_initializer(0.1))
 
     def get_fc_bias(self, shape):
-        return tf.get_variable("bias", shape[-1],
-            initializer =  tf.random_normal_initializer(tf.constant_initializer(0.1))
+        return tf.get_variable("fc_bias", shape[-1],
+            initializer = tf.constant_initializer(0.1))

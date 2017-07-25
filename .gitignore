@@ -1,4 +1,10 @@
+
 # FLOYDHUB FILES #
-#################
+
 .floydignore
 .floydexpt
+
+
+# LOG FILES #
+logs
+__pycache__
