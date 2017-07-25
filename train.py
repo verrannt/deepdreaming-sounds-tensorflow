@@ -97,6 +97,10 @@ def train(path, n_iterations, batch_size):
 						model.keep_prob:1.0, model.learning_rate:learning_rate})
 				print("Step %d -- Validate accuracy: %g"%(i, val_acc))
 
+			# Save session every 500 steps
+			if i % 500 == 0:
+				saver.save(ses, "logs/model/saver/model-{}".format(i))
+
 			writer.add_summary(summary, i)
 
 		# Final testing evaluation
@@ -105,8 +109,6 @@ def train(path, n_iterations, batch_size):
 			feed_dict={model.x:testX, model.labels:testY, model.keep_prob:1.0})
 		print("Test accuracy: %g"%(test_acc))
 
-		# Save the weights
-		saver.save(ses, "logs/model/model")
 		# Close the summary writer
 		writer.close()
 
