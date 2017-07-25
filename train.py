@@ -7,7 +7,7 @@ import zipfile
 from os import listdir
 from os.path import isfile, join
 import sys
-from utilities import Util
+from utilities import Batchgeneration
 from model import CNN
 
 # NOT NEEDED RIGHT NOW BECAUSE WE ARE USING WAV FILES
@@ -29,16 +29,16 @@ args = sys.argv
 if len(sys.argv) == 1:
 	n_iterations = 50000
 	batch_size = 100
-	# path = "./UrbanSound8K_modified/urbansound.pkl"
-	path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
+	path = "./UrbanSound8K_modified/"
+	# path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 elif len(sys.argv) == 2:
 	n_iterations = int(args[1])
 	batch_size = 100
-	path = "./UrbanSound8K_modified/urbansound.pkl"
+	path = "./UrbanSound8K_modified/"
 elif len(sys.argv) == 3:
 	n_iterations = int(args[1])
 	batch_size = int(args[2])
-	path = "./UrbanSound8K_modified/urbansound.pkl"
+	path = "./UrbanSound8K_modified/"
 else:
 	n_iterations = int(args[1])
 	batch_size = int(args[2])
@@ -55,9 +55,10 @@ def train(path, n_iterations, batch_size):
 	'''
 	# Base learning rate
 	learning_rate = 0.01
+	# Array to hold evaluated accuracies for learning rate adaptation
+	accuracies = []
 	# Initialize the model specified in the model.py file
-	model = CNN(input_shape = (129, 13), kernel_size = 3,
-		n_classes = 9, learning_rate = learning_rate) # changed Transposed here
+	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
 	# Initialize saver class
 	saver = tf.train.Saver(tf.trainable_variables())
 
@@ -72,7 +73,7 @@ def train(path, n_iterations, batch_size):
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
 			# to generate the batch from wav files or the pickle file
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
 
 			# Training step
 			train_acc, summary, _ = ses.run(
@@ -86,7 +87,7 @@ def train(path, n_iterations, batch_size):
 			accuracies.append(train_acc)
 			if len(accuracies) > 200:
 				accuracies.pop(0)
-			if np.mean(l) > 0.7:
+			if np.mean(accuracies) > 0.7:
 				learning_rate = 0.0001
 
 			# Validation step
@@ -101,6 +102,7 @@ def train(path, n_iterations, batch_size):
 			if i % 500 == 0:
 				saver.save(ses, "logs/model/saver/model-{}".format(i))
 
+			# Add summaries for tensorboard visualization
 			writer.add_summary(summary, i)
 
 		# Final testing evaluation
