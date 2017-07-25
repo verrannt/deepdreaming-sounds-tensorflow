@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.mlab
 import urllib.request
 import zipfile
-from os import listdir
-from os.path import isfile, join
+from os import listdir, mkdir
+from os.path import isfile, isdir, join
 import sys
 from utilities import Batchgeneration
 from model import CNN
@@ -43,6 +43,12 @@ else:
 	n_iterations = int(args[1])
 	batch_size = int(args[2])
 	path = str(args[3])
+
+# Check if directories for logging already exist, if not create them
+if not isdir("logs"):
+	mkdir("logs")
+	mkdir("logs/model")
+	mkdir("logs/tensorboard")
 
 # Specify after how many steps we want to make a validation step
 val_step = 10
