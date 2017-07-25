@@ -26,7 +26,7 @@ class CNN():
     def __init__(self, input_shape, kernel_size, n_classes):
         # Get shapes for the layers
         self.architecture = Architectures.fat_shallow(kernel_size, n_classes)
-        self.learning_rate = 0.03
+        self.learning_rate = 0.01
 
         # Init parameters
         input_height, input_width = input_shape

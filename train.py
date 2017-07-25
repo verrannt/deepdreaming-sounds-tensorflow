@@ -65,6 +65,8 @@ def train(path, n_iterations, batch_size):
 		writer = tf.summary.FileWriter(logdir="logs/tensorboard", graph=ses.graph)
 		# Initialize proto to save graph
 		tf.train.write_graph(ses.graph_def, 'logs/model','graph.pb')
+		# Base learning rate
+		learning_rate = 0.01
 
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
@@ -74,14 +76,16 @@ def train(path, n_iterations, batch_size):
 			# Training step
 			train_acc, summary, _ = ses.run(
 				[model.accuracy, model.merged, model.train_step],
-				feed_dict = {model.x:trainX, model.labels:trainY, model.keep_prob:0.7})
+				feed_dict = {model.x:trainX, model.labels:trainY,
+					model.keep_prob:0.5, model.learning_rate:learning_rate})
 			print("Step %d -- Training accuracy: %g"%(i, train_acc))
 
 			# Validation step
 			if i % val_step == 0:
 				val_acc = ses.run(
 					model.accuracy,
-					feed_dict = {model.x:valX, model.labels:valY, model.keep_prob:1.0})
+					feed_dict = {model.x:valX, model.labels:valY,
+						model.keep_prob:1.0, model.learning_rate:learning_rate})
 				print("Step %d -- Validate accuracy: %g"%(i, val_acc))
 
 			writer.add_summary(summary, i)
