@@ -75,6 +75,14 @@ def train(path, n_iterations, batch_size):
 			# to generate the batch from wav files or the pickle file
 			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
 
+			# Validation step
+			if i % val_step == 0:
+				val_acc = ses.run(
+					model.accuracy,
+					feed_dict = {model.x:valX, model.labels:valY,
+						model.keep_prob:1.0, model.learning_rate:learning_rate})
+				print("Step %d ~~ Validate accuracy: %g"%(i, val_acc))
+
 			# Training step
 			train_acc, summary, _ = ses.run(
 				[model.accuracy, model.merged, model.train_step],
@@ -89,14 +97,6 @@ def train(path, n_iterations, batch_size):
 				accuracies.pop(0)
 			if np.mean(accuracies) > 0.7:
 				learning_rate = 0.0001
-
-			# Validation step
-			if i % val_step == 0:
-				val_acc = ses.run(
-					model.accuracy,
-					feed_dict = {model.x:valX, model.labels:valY,
-						model.keep_prob:1.0, model.learning_rate:learning_rate})
-				print("Step %d -- Validate accuracy: %g"%(i, val_acc))
 
 			# Save session every 500 steps
 			if i % 500 == 0:
