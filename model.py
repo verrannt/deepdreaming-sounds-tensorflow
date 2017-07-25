@@ -42,9 +42,7 @@ class CNN():
 
         self.fc1 = self.activate(self.fc_layer(self.flat, "fc1"))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
-        self.fc2 = self.fc_layer(self.fc1_dropout, "fc2")
-        # self.output = tf.nn.softmax(self.fc7, name="network_output")
-        self.output = self.fc2
+        self.output = self.fc_layer(self.fc1_dropout, "fc2")
 
         with tf.name_scope('cross_entropy'):
             self.cross_entropy = tf.reduce_mean(
