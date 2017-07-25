@@ -25,24 +25,24 @@ class CNN():
         self.learning_rate = tf.placeholder(tf.float32)
 
         # Data flow graph
-        self.conv1 = self.conv_layer(self.x_image, "conv1")
-        self.conv2 = self.conv_layer(self.conv1, "conv2")
-        self.pool2 = self.max_pool(self.conv2, "pool2")
+        self.conv1 = self.conv_layer(self.x_image, 'conv1')
+        self.conv2 = self.conv_layer(self.conv1, 'conv2')
+        self.pool2 = self.max_pool(self.conv2, 'pool2')
         self.pool2_dropout = tf.nn.dropout(self.pool2, self.keep_prob)
 
-        self.conv3 = self.conv_layer(self.pool2_dropout, "conv3")
-        self.conv4 = self.conv_layer(self.conv3, "conv4")
-        self.pool4 = self.max_pool(self.conv4, "pool4")
+        self.conv3 = self.conv_layer(self.pool2_dropout, 'conv3')
+        self.conv4 = self.conv_layer(self.conv3, 'conv4')
+        self.pool4 = self.max_pool(self.conv4, 'pool4')
 
-        # self.conv5 = self.conv_layer(self.pool4, "conv5")
-        # self.conv5_1 = self.conv_layer(self.conv5, "conv5_1")
-        # self.conv5_2 = self.conv_layer(self.conv5_1, "conv5_2")
+        # self.conv5 = self.conv_layer(self.pool4, 'conv5')
+        # self.conv5_1 = self.conv_layer(self.conv5, 'conv5_1')
+        # self.conv5_2 = self.conv_layer(self.conv5_1, 'conv5_2')
 
         self.flat = self.flatten(self.pool4)
 
-        self.fc1 = self.activate(self.fc_layer(self.flat, "fc1"))
+        self.fc1 = self.activate(self.fc_layer(self.flat, 'fc1'))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
-        self.output = self.fc_layer(self.fc1_dropout, "fc2")
+        self.output = self.fc_layer(self.fc1_dropout, 'fc2')
 
         with tf.name_scope('cross_entropy'):
             self.cross_entropy = tf.reduce_mean(
@@ -82,7 +82,7 @@ class CNN():
             shape = self.architecture[name]
             print(shape)
             with tf.name_scope('conv_kernel'):
-                kernel = self.get_weights("kernel", shape)
+                kernel = self.get_weights('kernel', shape)
                 variable_summaries(kernel)
             with tf.name_scope('convolution'):
                 conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
@@ -100,7 +100,7 @@ class CNN():
             input_shape = input.get_shape().as_list()
             shape = [input_shape[1], self.architecture[name][1]]
             with tf.name_scope('fc_weights'):
-                weights = self.get_weights("weights", shape)
+                weights = self.get_weights('weights', shape)
                 variable_summaries(weights)
             with tf.name_scope('fc_bias'):
                 bias = self.get_fc_bias(shape)
@@ -116,9 +116,9 @@ class CNN():
             initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 
     def get_conv_bias(self, shape):
-        return tf.get_variable("conv_bias", shape[-1],
+        return tf.get_variable('conv_bias', shape[-1],
             initializer = tf.constant_initializer(0.1))
 
     def get_fc_bias(self, shape):
-        return tf.get_variable("fc_bias", shape[-1],
+        return tf.get_variable('fc_bias', shape[-1],
             initializer = tf.constant_initializer(0.1))
