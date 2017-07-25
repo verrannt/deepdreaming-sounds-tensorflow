@@ -10,18 +10,17 @@ import sys
 from utilities import Batchgeneration
 from model import CNN
 
-# NOT NEEDED RIGHT NOW BECAUSE WE ARE USING WAV FILES
 # Download the modified urbansound dataset if it is not already present
-# dir_content = listdir("UrbanSound8K_modified")
-# if not 'urbansound.pkl' in dir_content:
-# 	# TODO get the right adress
-# 	url = 'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
-# 	print("Dataset not found. Downloading 468MB, please wait ...")
-# 	urllib.request.urlretrieve(url, "./UrbanSound8K_modified/urbansound.zip")
-# 	zip_ref = zipfile.ZipFile("./UrbanSound8K_modified/urbansound.zip", 'r')
-# 	zip_ref.extractall("./UrbanSound8K_modified/")
-# 	zip_ref.close()
-# 	os.remove("./UrbanSound8K_modified/urbansound.zip")
+dir_content = listdir("UrbanSound8K_modified")
+if not 'urbansound.pkl' in dir_content:
+	# TODO get the right adress
+	url = 'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
+	print("Dataset not found. Downloading 468MB, please wait ...")
+	urllib.request.urlretrieve(url, "./UrbanSound8K_modified/urbansound.zip")
+	zip_ref = zipfile.ZipFile("./UrbanSound8K_modified/urbansound.zip", 'r')
+	zip_ref.extractall("./UrbanSound8K_modified/")
+	zip_ref.close()
+	os.remove("./UrbanSound8K_modified/urbansound.zip")
 
 # Get values for number of iterations, batch size and path to the dataset;
 # if not given, use standard values
@@ -74,7 +73,7 @@ def train(path, n_iterations, batch_size):
 		# Initialize writer for tensorboard summaries
 		writer = tf.summary.FileWriter(logdir="logs/tensorboard", graph=ses.graph)
 		# Initialize proto to save graph
-		tf.train.write_graph(ses.graph_def, 'logs/model', 'graph.pb')
+		tf.train.write_graph(ses.graph_def, 'logs/model', 'graph.pb', as_text=False)
 
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
@@ -106,7 +105,7 @@ def train(path, n_iterations, batch_size):
 
 			# Save session every 500 steps
 			if i % 500 == 0:
-				saver.save(ses, "logs/model/saver/model-{}".format(i))
+				saver.save(ses, "logs/model/model-{}".format(i))
 
 			# Add summaries for tensorboard visualization
 			writer.add_summary(summary, i)
