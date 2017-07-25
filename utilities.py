@@ -20,7 +20,7 @@ def variable_summaries(var):
         tf.summary.scalar('min', tf.reduce_min(var))
         tf.summary.histogram('histogram', var)
 
-class Util():
+class Batchgeneration():
 
     def __init__(self, path):
         self.path = path # '../TrainingData/UrbanSound8K_modified_v2/audio/'

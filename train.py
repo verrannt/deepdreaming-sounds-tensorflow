@@ -47,7 +47,7 @@ else:
 # Specify after how many steps we want to make a validation step
 val_step = 10
 # Initialize the utilities class for generating batches
-util = Util(path)
+util = Batchgeneration(path)
 
 def train(path, n_iterations, batch_size):
 	'''
