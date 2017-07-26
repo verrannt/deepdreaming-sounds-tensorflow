@@ -56,16 +56,15 @@ class CNN():
         with tf.variable_scope('cross_entropy'):
             self.cross_entropy = tf.reduce_mean(
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.output))
-        # Calculate L2 loss
-        all_vars = tf.trainable_variables()
-        print([v.name for v in all_vars
-            if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
-        self.l2 = 0.001 * tf.add_n([tf.nn.l2_loss(v) for v in all_vars
-            if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
-        # Add L2 loss to cross entropy
-        self.loss = tf.add(self.cross_entropy, self.l2, name="loss")
+        # L2 LOSS CURRENTLY NOT IN USE BECAUSE IT CAUSED WORSE PERFORMANCE
+        # # Calculate L2 loss
+        # all_vars = tf.trainable_variables()
+        # self.l2 = 0.001 * tf.add_n([tf.nn.l2_loss(v) for v in all_vars
+        #     if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
+        # # Add L2 loss to cross entropy
+        # self.loss = tf.add(self.cross_entropy, self.l2, name="loss")
         # Optimizer step
-        self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
+        self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.cross_entropy)
 
         # Evaluate prediction accuracy
         with tf.variable_scope('correct_prediction'):
