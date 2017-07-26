@@ -26,7 +26,7 @@ To get an overview over the files in this repository, here is a short descriptio
 
 We used a convolutional neural network with five convolutional, two pooling, two dropout and three feed-forward layers. The graph looks as follows:
 
-![Network graph](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/images/graph_2017-06-27_r1.png)
+![Network graph](https://raw.githubusercontent.com/verrannt/TF_CNN_SoundVis/master/images/graph_2017-07-26_r2.png)
 
 ### Usage
 
