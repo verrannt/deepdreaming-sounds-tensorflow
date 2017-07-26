@@ -7,5 +7,5 @@ logs
 __pycache__
 
 # DATASET #
-UrbanSound8K_modified/urbansound.pkl
-UrbanSound8K_modified/audio
+UrbanSound8K_modified
+download_dataset.py

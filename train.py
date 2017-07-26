@@ -16,18 +16,6 @@ import sys
 from utilities import Batchgeneration
 from model import CNN
 
-# Download the modified urbansound dataset if it is not already present
-dir_content = listdir("UrbanSound8K_modified")
-if not 'urbansound.pkl' in dir_content:
-	# TODO get the right adress
-	print("Dataset not found. Downloading 468MB, please wait ...")
-	url = 'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
-	urllib.request.urlretrieve(url, "./UrbanSound8K_modified/urbansound.zip")
-	zip_ref = zipfile.ZipFile("./UrbanSound8K_modified/urbansound.zip", 'r')
-	zip_ref.extractall("./UrbanSound8K_modified/")
-	zip_ref.close()
-	os.remove("./UrbanSound8K_modified/urbansound.zip")
-
 # Get values for number of iterations, batch size and path to the dataset;
 # if not given, use standard values
 args = sys.argv
@@ -71,7 +59,7 @@ def train(path, n_iterations, batch_size):
 	# Boolean to assure that we only decrease learning rate once
 	only_once = True
 	# Initialize the model specified in the model.py file
-	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
+	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9)
 	# Initialize saver class
 	saver = tf.train.Saver(tf.trainable_variables())
 
@@ -86,7 +74,7 @@ def train(path, n_iterations, batch_size):
 		for i in range(n_iterations):
 			# Generate the batch with specified batch size using utilities.py's method
 			# to generate the batch from wav files or the pickle file
-			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(batch_size)
+			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
 
 			# Validation step
 			if i % val_step == 0:
