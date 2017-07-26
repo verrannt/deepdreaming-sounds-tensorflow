@@ -6,64 +6,53 @@ UrbanSound8K dataset and print out the results.
 '''
 
 import random
+import numpy as np
 import tensorflow as tf
 from os import listdir
 from scipy.io import wavfile
 from utilities import Batchgeneration
 from model import CNN
 
-path = "./UrbanSound8K_modified/"
-
 # Initialize the utilities class for generating batches
-util = Batchgeneration(path)
-# and the outputs list to hold the network's outputs.
-outputs = []
-# Initialize the model
-model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
-# Initialize the saver
-# saver = tf.train.Saver()
-with tf.Session() as ses:
-    # Initialize the saver from meta graph
-    saver = tf.train.import_meta_graph("logs/model/model-10500.meta")
-    # and restore session from disk.
-    saver.restore(ses, "logs/model/model-10500")
+util = Batchgeneration("./UrbanSound8K_modified/")
 
-    # Generate one testing batch that contains 9*33 testing samples in testX and
-    # their corresponding labels in testY.
-    _,_,_,_, testX, testY = util.generate_batch_from_pickle(1000)
-    # For each of the samples
-    for i in range(len(testX)):
-        # get the network's prediction in what class it belongs
-        output = ses.run(model.output, feed_dict = {
-            model.x: testX, model.labels: testY,
-            model.keep_prob: 1.0, model.learning_rate: 0.001})
-        # and append it to the outputs array.
-        outputs.append(output)
+with tf.gfile.GFile('./logs/model/output.pb', "rb") as f:
+    graph_def = tf.GraphDef()
+    graph_def.ParseFromString(f.read())
 
-assert len(outputs) == len(testY), "WARNING: Length of output list and label \n\
+with tf.Graph().as_default() as graph:
+    tf.import_graph_def(
+        graph_def,
+        input_map=None,
+        return_elements=None,
+        name="prefix",
+        op_dict=None,
+        producer_op_list=None)
+
+# for op in graph.get_operations():
+#         print(op.name)
+
+x = graph.get_tensor_by_name('prefix/input:0')
+keep_prob = graph.get_tensor_by_name('prefix/keep_prob:0')
+y = graph.get_tensor_by_name('prefix/fc2/fully_connected/fc_out:0')
+
+with tf.Session(graph = graph) as ses:
+    _,_,_,_, testX, testY = util.generate_batch_from_pickle(100)
+    output = ses.run(y, feed_dict={x: testX, keep_prob: 1.0})
+    print("Shape of input: " + str(np.shape(testX)))
+    print("Type of input: " + str(type(testX)))
+    print("Shape of output: " + str(len(output)))
+    print("Type of output: " + str(type(output)))
+    print("Shape of labels: " + str(len(testY)))
+    print("Type of labels: " + str(type(testY)))
+    print(output[0])
+    print(sum(output[0]))
+    print(testY[0])
+
+assert len(output) == len(testY), "WARNING: Length of output list and label \
 list do not match!"
 # Print the network outputs in comparison to the labels
 print("= OUTPUTS OF NETWORK VS ORIGINAL LABELS =\n\
 ========================================")
-for i in range(len(outputs)):
+for i in range(len(output)):
     print(outputs[i] + " ... " + testY[i])
-
-###########
-
-# classes = ['air_conditioner', 'car_horn', 'children_playing',
-#     'dog_bark', 'drilling', 'engine_idling', 'jackhammer', 'siren',
-#     'street_music']
-# samples = []
-#
-# for sample in n_samples:
-#     # choose a random class
-#     random_class = random.choice(classes)
-#     # get names of all TEST files in class
-#     all_filenames = listdir(path + random_class)
-#     test_filenames = [f for f in all_files if f.split("-")[0] == "TEST"]
-#     # choose random test file
-#     random_test_filename = random.choice(test_filenames)
-#     # get wav file
-#     wav_file = wavfile.read(path + class_name +"/"+ random_test_filename))[1]
-#     # convert to spectogram
-#     spec = Batchgeneration.spectogram(wav_file)

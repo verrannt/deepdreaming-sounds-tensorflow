@@ -116,8 +116,8 @@ def train(path, n_iterations, batch_size):
 				only_once = False
 
 			# Save session every 500 steps
-			if i % 500 == 0:
-				saver.save(ses, "logs/model/model-{}".format(i))
+			if i % 10 == 0:
+				saver.save(ses, "logs/model/model.ckpt", global_step = i)
 
 			# Add summaries for tensorboard visualization
 			writer.add_summary(summary, i)

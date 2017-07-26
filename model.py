@@ -33,11 +33,11 @@ class CNN():
 
         # Init parameters
         input_height, input_width = input_shape
-        self.x = tf.placeholder(tf.float32, [None, input_height, input_width])
-        self.labels = tf.placeholder(tf.float32, [None, n_classes])
-        self.x_image = tf.reshape(self.x, [-1, input_height, input_width, 1])
-        self.keep_prob = tf.placeholder(tf.float32)
-        self.learning_rate = tf.placeholder(tf.float32)
+        self.x = tf.placeholder(tf.float32, [None, input_height, input_width], name = "input")
+        self.labels = tf.placeholder(tf.float32, [None, n_classes], name = "labels")
+        self.x_image = tf.reshape(self.x, [-1, input_height, input_width, 1], name = "input_reshaped")
+        self.keep_prob = tf.placeholder(tf.float32, name = "keep_prob")
+        self.learning_rate = tf.placeholder(tf.float32, name = "learning_rate")
 
         # Data flow graph
         self.conv1 = self.conv_layer(self.x_image, 'conv1')
