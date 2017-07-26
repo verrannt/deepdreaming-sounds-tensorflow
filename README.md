@@ -79,7 +79,13 @@ and it will print the results.
 #### Dreaming Deep
 
 As mentioned above, the deep dreaming process is not yet applied. 
+
 ---
+
+## Acknowledgements and References
+
+[1] Thanks
+
 
 Github repositories used so far:
 + [sound-cnn](https://github.com/awjuliani/sound-cnn): Simple CNN used for classifying sound data
