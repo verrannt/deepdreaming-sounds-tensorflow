@@ -166,7 +166,7 @@ class CNN():
                 bias = self.get_bias('fc_bias', shape)
                 variable_summaries(bias)
             with tf.variable_scope('fully_connected'):
-                fc = tf.nn.bias_add(tf.matmul(input, weights), bias)
+                fc = tf.nn.bias_add(tf.matmul(input, weights), bias, name='fc_out')
                 tf.summary.histogram('pre_activations_fc', fc)
             return fc
 
