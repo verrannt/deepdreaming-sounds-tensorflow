@@ -55,14 +55,25 @@ batch_size = 100
 path = "./UrbanSound8K_modified/urbansound.pkl"
 ```
 
-#### Dreaming Deep
+The meta graph, called *"graph.pb"*, will be saved in *"./logs/model/"*, as will be the *model.ckpt* checkpoint files for the weights. Summary files that can be used for visualizations using tensorboard will be saved in *"./logs/tensorboard/"*. Don't worry if you do not see the logs directory yet, it will be created upon the first call of *train.py*, since git does not allow the syncing of empty directories.
 
-To visualize layers of the network, we first need a valid protobuf file that contains both the network structure (the meta graph) and the saved weights. To obtain such a file use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. The usage is as follows:
+#### Evaluation
+
+We provided a script called *run.py* which, after successfull training, can be used to further test the trained network on some samples. It imports the model from the *graph.pb* and *model.ckpt* files. Its usage is pretty simple, just make sure you have the appropriate model files present in the *"./logs/model/"* directory. On your local machine's console, type:
 
 ```bash
-python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --output_graph logs/model/output.pb --output_node_names output_node
+python3 run.py 
 ```
 
+#### Dreaming Deep
+
+As mentioned above, the deep dreaming process is not yet applied. Anyways, as a first step, we would need a valid protobuf file that contains both the network structure (the meta graph) and the saved weights. To obtain such a file one could use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. From this directory, an appropriate call from the shell would look like this:
+
+```bash
+python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --output_graph logs/model/output.pb --output_node_names fc2
+```
+
+Where it takes the *graph.pb* meta graph protobuf file and the *model.ckpt* checkpoint files that were generated during the training process as input and outputs the *output.pb* protobuf file that contains both the meta graph and the variable values from the checkpoints in one file. In addition to that, the output_node_name needs to be specified; our graph's output is simply the second feed-forward layer without an activation function, called "fc2".
 
 ---
 
