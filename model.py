@@ -2,6 +2,12 @@
 A simple Convolutional Neural Network with 5 convolutional and 2 feed forward
 layers.
 
+The init function will initialize the hyperparameters, create the dataflow graph
+and the functions for backpropagation and performance evaluation.
+
+Additional functions are provided in order to make the dataflow graph more
+readable.
+
 @date: 2017-06-20
 '''
 
@@ -34,30 +40,41 @@ class CNN():
         self.conv4 = self.conv_layer(self.conv3, 'conv4')
         self.pool4 = self.max_pool(self.conv4, 'pool4')
 
-        # self.conv5 = self.conv_layer(self.pool4, 'conv5')
-        # self.conv5_1 = self.conv_layer(self.conv5, 'conv5_1')
-        # self.conv5_2 = self.conv_layer(self.conv5_1, 'conv5_2')
-
         self.flat = self.flatten(self.pool4)
 
         self.fc1 = self.activate(self.fc_layer(self.flat, 'fc1'))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
         self.output = self.fc_layer(self.fc1_dropout, 'fc2')
 
+        # Cross entropy (variable_scope for tensorboard summaries)
         with tf.variable_scope('cross_entropy'):
             self.cross_entropy = tf.reduce_mean(
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.output))
-        self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.cross_entropy)
+        # Calculate L2 loss
+        all_vars = tf.trainable_variables()
+        print([v.name for v in all_vars
+            if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
+        self.l2 = 0.001 * tf.add_n([tf.nn.l2_loss(v) for v in all_vars
+            if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
+        # Simply add L2 loss to your unregularized loss
+        self.loss = tf.add(self.cross_entropy, self.l2, name="loss")
+        # Optimizer step
+        self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
+
+        # Evaluate prediction accuracy
         with tf.variable_scope('correct_prediction'):
             self.correct_prediction = tf.equal(tf.argmax(self.output,1), tf.argmax(self.labels,1))
         with tf.variable_scope('accuracy'):
             self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, tf.float32))
 
+        # Add to summary
         tf.summary.scalar('accuracy', self.accuracy)
         tf.summary.scalar('cross_entropy', self.cross_entropy)
         self.merged = tf.summary.merge_all()
 
     def flatten(self, input):
+        '''flattens an input tensor in order to fit it into a fully connected
+        layer'''
         shape = input.get_shape().as_list()
         dim = 1
         for d in shape[1:]:
@@ -65,22 +82,21 @@ class CNN():
         return tf.reshape(input, [-1, dim])
 
     def activate(self, input):
-        # NORMAL ReLU
-        # return tf.nn.relu(input)
-        # LEAKY ReLU
+        '''performs a leaky ReLU activation on the input tensor'''
         leak = 0.2
         f1 = 0.5 * (1 + leak)
         f2 = 0.5 * (1 - leak)
         return f1 * input + f2 * abs(input)
 
     def max_pool(self, input, name):
+        '''performs max pooling on the input tensor'''
         return tf.nn.max_pool(input, ksize=[1,2,2,1], strides=[1,2,2,1],
             padding='SAME', name=name)
 
     def conv_layer(self, input, name):
+        '''creates a convolutional layer'''
         with tf.variable_scope(name):
             shape = self.architecture[name]
-            print(shape)
             with tf.variable_scope('conv_kernel'):
                 kernel = self.get_weights('kernel', shape)
                 variable_summaries(kernel)

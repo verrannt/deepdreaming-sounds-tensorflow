@@ -1,3 +1,9 @@
+'''
+Train the sound classifier on the modified UrbanSound8K dataset.
+
+@date: 2017-07-26
+'''
+
 import tensorflow as tf
 import scipy.io.wavfile
 import numpy as np
@@ -27,7 +33,7 @@ if not 'urbansound.pkl' in dir_content:
 args = sys.argv
 if len(sys.argv) == 1:
 	n_iterations = 50000
-	batch_size = 100
+	batch_size = 50
 	path = "./UrbanSound8K_modified/"
 	# path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 elif len(sys.argv) == 2:
@@ -62,6 +68,8 @@ def train(path, n_iterations, batch_size):
 	learning_rate = 0.01
 	# Array to hold evaluated accuracies for learning rate adaptation
 	accuracies = []
+	# Boolean to assure that we only decrease learning rate once
+	only_once = True
 	# Initialize the model specified in the model.py file
 	model = CNN(input_shape = (129, 13), kernel_size = 3, n_classes = 9) # changed Transposed here
 	# Initialize saver class
@@ -100,11 +108,12 @@ def train(path, n_iterations, batch_size):
 			accuracies.append(train_acc)
 			if len(accuracies) > 200:
 				accuracies.pop(0)
-			if np.mean(accuracies) > 0.7:
+			if np.mean(accuracies) > 0.7 and only_once:
 				learning_rate = 0.0001
-				print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\
+				print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\
 				Learning rate decreased to 0.0001\n\
-				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+				only_once = False
 
 			# Save session every 500 steps
 			if i % 500 == 0:

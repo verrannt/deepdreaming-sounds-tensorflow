@@ -1,6 +1,6 @@
 '''
-Evaluate the network on a specified number of testing samples and print out the
-results.
+Evaluate the network on a specified number of testing samples from the modified
+UrbanSound8K dataset and print out the results.
 
 @date: 2017-07-26
 '''
@@ -28,7 +28,7 @@ with tf.Session() as ses:
     # and restore session from disk.
     saver.restore(ses, "logs/model/model-10500")
 
-    # Generate one testing batch that contains 33 testing samples in testX and
+    # Generate one testing batch that contains 9*33 testing samples in testX and
     # their corresponding labels in testY.
     _,_,_,_, testX, testY = util.generate_batch_from_pickle(1000)
     # For each of the samples
