@@ -19,6 +19,9 @@ To get an overview over the files in this repository, here is a short descriptio
 + __images__ includes images used in this readme and some infographics about our current progress.
 + __train.py__ is the main file for training the network. It imports __utilities.py__ which is responsible for creating appropriate training, testing and validation batches from the dataset as well as the Tensorflow implementation of a CNN that we wrote in __model.py__. The batches then will be fed into the model in order to train it on the data.
 + __cnn_architectures.py__ contains a simple helper class that returns python dicitonaries describing the shapes of the different neural network layers to ease playing around with different architectures.
++ __eval.py__ is the script for evaluating the performance of the network after training. It needs a valid protobuf file in order to obtain the network's graph def, which can be generated using the __freeze_graph.py__ script.
+
+More on that under [Usage](#usage)!
 
 ### Network Architecture
 
@@ -39,7 +42,7 @@ The following additional python libraries are needed:
 
 #### Training
 
-In order to train the network, navigate to the directory you cloned the repository in. From there, you need to run _train.py_ using an installation of Python 3. _train.py_ will check if you have the pickled dataset already downloaded and if not download it for you using urllib and save it in your current directory under *"./UrbanSound8K_modified/urbansound.pkl"*. Furthermore, you can specify the number of iterations, batch size and path to the dataset with sys arguments.
+In order to train the network, navigate to the directory you cloned the repository in. From there, you need to run _train.py_ using an installation of Python 3. In order to work, _train.py_ needs the dataset described above which you should download and save as described. Furthermore, you can specify the number of iterations, batch size and path to the dataset with sys arguments.
 
 ```bash
 python3 train.py 'number_of_iterations' 'batch_size' 'path'
@@ -57,22 +60,25 @@ The meta graph, called *"graph.pb"*, will be saved in *"./logs/model/"*, as will
 
 #### Evaluation
 
-We provided a script called *run.py* which, after successfull training, can be used to further test the trained network on some samples. It imports the model from the *graph.pb* and *model.ckpt* files. Its usage is pretty simple, just make sure you have the appropriate model files present in the *"./logs/model/"* directory. On your local machine's console, type:
+We provided a script called *eval.py* which, after successfull training, can be used to further test the trained network on some samples. It needs a valid protobuf file that contains both the network structure (the meta graph) and the saved weights to work. To obtain such a file, use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. From this directory, an appropriate call from the shell looks like this:
 
 ```bash
-python3 run.py 
+python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --input_binary True --output_graph logs/model/output.pb --output_node_names fc2/fully_connected/fc_out
 ```
+
+The *freeze_graph.py* script takes the *graph.pb* meta graph protobuf file and the *model.ckpt* checkpoint files that were generated during the training process as input and outputs the *output.pb* protobuf file that contains both the meta graph and the variable values from the checkpoints in one file. In addition to that, the output_node_name needs to be specified; our graph's output is simply the second feed-forward layer without an activation function, which is called "fc2/fully_connected/fc_out" due to the nature of Tensorflow's variable scopes .
+
+*eval.py* imports the model from the generated *output.pb* file. Its usage is pretty simple, just make sure you have the appropriate file present in the *"./logs/model/"* directory. On your local machine's console, type:
+
+```bash
+python3 eval.py 
+```
+
+and it will print the results.
 
 #### Dreaming Deep
 
-As mentioned above, the deep dreaming process is not yet applied. Anyways, as a first step, we would need a valid protobuf file that contains both the network structure (the meta graph) and the saved weights. To obtain such a file one could use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. From this directory, an appropriate call from the shell would look like this:
-
-```bash
-python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --output_graph logs/model/output.pb --output_node_names fc2
-```
-
-Where it takes the *graph.pb* meta graph protobuf file and the *model.ckpt* checkpoint files that were generated during the training process as input and outputs the *output.pb* protobuf file that contains both the meta graph and the variable values from the checkpoints in one file. In addition to that, the output_node_name needs to be specified; our graph's output is simply the second feed-forward layer without an activation function, called "fc2".
-
+As mentioned above, the deep dreaming process is not yet applied. 
 ---
 
 Github repositories used so far:
