@@ -24,7 +24,7 @@ To get an overview over the files in this repository, here is a short descriptio
 
 ### Network Architecture
 
-We used a convolutional neural network with five convolutional, two pooling, two dropout and three feed-forward layers. The graph looks as follows:
+We used a convolutional neural network with four convolutional, two pooling, two dropout and two feed-forward/fully-connected layers. The graph looks as follows:
 
 ![Network graph](https://raw.githubusercontent.com/verrannt/deepdreaming-sounds-tensorflow/master/images/graph_2017-07-26_r2.png)
 
