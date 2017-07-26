@@ -21,7 +21,7 @@ from model import CNN
 args = sys.argv
 if len(sys.argv) == 1:
 	n_iterations = 50000
-	batch_size = 50
+	batch_size = 100
 	path = "./UrbanSound8K_modified/"
 	# path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
 elif len(sys.argv) == 2:
@@ -72,8 +72,8 @@ def train(path, n_iterations, batch_size):
 		tf.train.write_graph(ses.graph_def, 'logs/model', 'graph.pb', as_text=False)
 
 		for i in range(n_iterations):
-			# Generate the batch with specified batch size using utilities.py's method
-			# to generate the batch from wav files or the pickle file
+			# Generate the batch with specified batch size using utilities.py's
+			# method to generate the batch from wav files or the pickle file
 			trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_wav(batch_size)
 
 			# Validation step
@@ -121,26 +121,3 @@ def train(path, n_iterations, batch_size):
 		writer.close()
 
 train(path, n_iterations, batch_size)
-
-# def train_mnist(path, n_iterations, batch_size):
-# 	''' Train and test network on MNIST dataset '''
-# 	from tensorflow.examples.tutorials.mnist import input_data
-# 	mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-# 	model = CNN(input_shape = (28, 28), kernel_size = 5, n_classes = 10)
-# 	init = tf.global_variables_initializer()
-# 	with tf.Session() as ses:
-# 		writer = tf.summary.FileWriter(logdir="./logs/tensorboard/mnist",graph_def=model)
-# 		ses.run(init)
-# 		for i in range(n_iterations):
-# 			trainBatch = mnist.train.next_batch(batch_size)
-# 			trainX, trainY = trainBatch[0], trainBatch[1]
-# 			train_acc, summary, _ = ses.run(
-# 				[model.accuracy, model.merged, model.train_step],
-# 				feed_dict = {model.x:trainX, model.labels:trainY, model.keep_prob:0.5})
-# 			print("Step %d -- Training accuracy: %g"%(i, train_acc))
-# 			writer.add_summary(summary, i)
-# 		test_accuracy = ses.run(
-# 			model.accuracy,
-# 			feed_dict={model.x:mnist.test.images, model.labels:mnist.test.labels, model.keep_prob:1.0})
-# 		print("Test accuracy: %g"%(test_accuracy))
-# 		writer.close()

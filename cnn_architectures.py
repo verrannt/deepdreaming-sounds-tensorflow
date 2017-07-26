@@ -1,5 +1,5 @@
 class Architectures():
-    ''' Helper class that returns python dictionary containing
+    '''Helper class that returns python dictionary containing
     shapes for CNN layers
     '''
 
@@ -52,7 +52,7 @@ class Architectures():
     def vgg16(self):
         return {'conv1_1' : [kernel_size, kernel_size, 1, 64],
                 'conv1_2' : [kernel_size, kernel_size, 64, 64],
-        	    'conv2_1' : [kernel_size, kernel_size, 64, 128],
+                'conv2_1' : [kernel_size, kernel_size, 64, 128],
                 'conv2_2' : [kernel_size, kernel_size, 128, 128],
                 'conv3_1' : [kernel_size, kernel_size, 128, 256],
                 'conv3_2' : [kernel_size, kernel_size, 256, 256],

@@ -9,8 +9,8 @@ from os.path import isfile, join, isdir
 from scipy.io import wavfile
 
 def variable_summaries(var):
-    ''' Helper class for attaching summaries to a Tensor
-    (for TensorBoard visualization). '''
+    '''Helper class for attaching summaries to a Tensor
+    (for TensorBoard visualization).'''
     with tf.name_scope('summaries'):
         mean = tf.reduce_mean(var)
         tf.summary.scalar('mean', mean)
@@ -24,7 +24,7 @@ def variable_summaries(var):
 class Batchgeneration():
 
     def __init__(self, path):
-        self.path = path # '../TrainingData/UrbanSound8K_modified_v2/audio/'
+        self.path = path
         # self.classes = [f for f in listdir(self.path) if isdir(join(self.path,f))]
         self.classes = ['air_conditioner', 'car_horn', 'children_playing',
             'dog_bark', 'drilling', 'engine_idling', 'jackhammer', 'siren',
@@ -162,21 +162,5 @@ class Batchgeneration():
         return [samples[i][1] for i in range(len(samples))]
 
     def norm(self, spec):
-        ''' z-transformation of the input spectrogram '''
-        spec_norm = (spec - np.mean(spec) / np.std(spec))
-        # for freq in spec:
-        #     for i in range(len(freq)):
-        #         freq[i] - np.mean
-        #     spec_norm.append([freq[i] for i in range(len(freq)))
-        #     for freq_spectrum in sample:
-        #         freq_spectrum = (freq_spectrum-np.mean(sample))/np.std(sample)
-        return spec_norm
-
-# util = Util("../TrainingData/UrbanSound8K_modified_v2/pickle/")
-# import os
-# os.getcwd()
-# trainX,trainY,valX,valY,testX,testY = util.generate_batch_from_pickle(100)
-# print(trainX[0].shape)
-# print(type(trainX))
-# print(type(trainX[0]))
-# print(len(trainX[0][0]),len(valX))
+        '''z-transformation of the input spectrogram'''
+        return (spec - np.mean(spec) / np.std(spec))
