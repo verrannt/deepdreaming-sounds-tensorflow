@@ -10,6 +10,8 @@ This project is currently a __work in progress__. So far, training accuracies re
 
 We used the [UrbanSound8K dataset](https://serv.cusp.nyu.edu/projects/urbansounddataset/urbansound8k.html) compiled by NYU researchers Justin Salamon, Christopher Jacoby and Juan Pablo Bello that we slightly modified ourselves. A thorough description of the dataset and the modifications can be found in the [UrbanSound8K_README](./UrbanSound8K_modified/UrbanSound8K_README.txt).
 
+The files in the dataset are provided in .wav format. When using the network, they will automatically be converted to spectograms before being fed into the network. 
+
 ### File descriptions
 
 To get an overview over the files in this repository, here is a short description:
