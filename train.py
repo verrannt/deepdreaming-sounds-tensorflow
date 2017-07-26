@@ -22,16 +22,15 @@ args = sys.argv
 if len(sys.argv) == 1:
 	n_iterations = 50000
 	batch_size = 100
-	path = "./UrbanSound8K_modified/"
-	# path = "../TrainingData/UrbanSound8K_modified_v2/audio/"
+	path = "./UrbanSound8K_modified/audio/"
 elif len(sys.argv) == 2:
 	n_iterations = int(args[1])
 	batch_size = 100
-	path = "./UrbanSound8K_modified/"
+	path = "./UrbanSound8K_modified/audio/"
 elif len(sys.argv) == 3:
 	n_iterations = int(args[1])
 	batch_size = int(args[2])
-	path = "./UrbanSound8K_modified/"
+	path = "./UrbanSound8K_modified/audio/"
 else:
 	n_iterations = int(args[1])
 	batch_size = int(args[2])
