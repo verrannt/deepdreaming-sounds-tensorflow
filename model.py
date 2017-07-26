@@ -1,5 +1,5 @@
 '''
-A simple Convolutional Neural Network with 5 convolutional and 2 feed forward
+A simple Convolutional Neural Network with 4 convolutional and 2 feed forward
 layers.
 
 The init function will initialize the hyperparameters, create the dataflow graph
@@ -19,6 +19,15 @@ from cnn_architectures import Architectures
 class CNN():
 
     def __init__(self, input_shape, kernel_size, n_classes):
+        '''Initializes the model with its hyperparameters and builds the data
+        flow graph, optimization/evaluation step and summary requirements.
+
+        @params
+        input_shape: the shape of a single input image
+        kernel_size: the size of the kernels of the convolutional layers
+        n_classes: the number of classes, needed for the output of the network
+        '''
+
         # Get shapes for the layers
         self.architecture = Architectures.fat_shallow(kernel_size, n_classes)
 
@@ -35,13 +44,10 @@ class CNN():
         self.conv2 = self.conv_layer(self.conv1, 'conv2')
         self.pool2 = self.max_pool(self.conv2, 'pool2')
         self.pool2_dropout = tf.nn.dropout(self.pool2, self.keep_prob)
-
         self.conv3 = self.conv_layer(self.pool2_dropout, 'conv3')
         self.conv4 = self.conv_layer(self.conv3, 'conv4')
         self.pool4 = self.max_pool(self.conv4, 'pool4')
-
         self.flat = self.flatten(self.pool4)
-
         self.fc1 = self.activate(self.fc_layer(self.flat, 'fc1'))
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
         self.output = self.fc_layer(self.fc1_dropout, 'fc2')
@@ -56,7 +62,7 @@ class CNN():
             if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
         self.l2 = 0.001 * tf.add_n([tf.nn.l2_loss(v) for v in all_vars
             if 'conv_kernel' in v.name or 'fc_weights' in v.name and not 'bias' in v.name])
-        # Simply add L2 loss to your unregularized loss
+        # Add L2 loss to cross entropy
         self.loss = tf.add(self.cross_entropy, self.l2, name="loss")
         # Optimizer step
         self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
@@ -73,8 +79,12 @@ class CNN():
         self.merged = tf.summary.merge_all()
 
     def flatten(self, input):
-        '''flattens an input tensor in order to fit it into a fully connected
-        layer'''
+        '''Flattens an input tensor in order to fit it from a convolutional
+        into a fully connected layer
+
+        @returns
+        the flattened input tensor
+        '''
         shape = input.get_shape().as_list()
         dim = 1
         for d in shape[1:]:
@@ -82,19 +92,42 @@ class CNN():
         return tf.reshape(input, [-1, dim])
 
     def activate(self, input):
-        '''performs a leaky ReLU activation on the input tensor'''
+        '''Performs an element-wise leaky ReLU activation on the input tensor
+
+        @returns
+        leaky ReLU activation applied to the input tensor
+        '''
         leak = 0.2
         f1 = 0.5 * (1 + leak)
         f2 = 0.5 * (1 - leak)
         return f1 * input + f2 * abs(input)
 
     def max_pool(self, input, name):
-        '''performs max pooling on the input tensor'''
+        '''Performs max pooling on the input tensor
+
+        @params
+        input: the input tensor
+        name: name of the pooling layer for tensorboard visualization
+
+        @returns
+        max pooling applied to the input tensor
+        '''
         return tf.nn.max_pool(input, ksize=[1,2,2,1], strides=[1,2,2,1],
             padding='SAME', name=name)
 
     def conv_layer(self, input, name):
-        '''creates a convolutional layer'''
+        '''Creates a convolutional layer with variable scopes for tensorboard
+        visualization. Shapes for the kernel/bias are provided by the
+        cnn_architectures class. Does perform an activation using the
+        self.activate() function.
+
+        @params
+        input: input tensor to the layer
+        name: specifies whether it's a fully-connected or convolutional layer
+
+        @returns
+        a tensorflow op for the whole layer
+        '''
         with tf.variable_scope(name):
             shape = self.architecture[name]
             with tf.variable_scope('conv_kernel'):
@@ -104,7 +137,7 @@ class CNN():
                 conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
                 variable_summaries(conv)
             with tf.variable_scope('conv_bias'):
-                bias = self.get_conv_bias(shape)
+                bias = self.get_bias('conv_bias', shape)
                 variable_summaries(bias)
             with tf.variable_scope('convolution_with_bias'):
                 conv_bias = tf.nn.bias_add(conv, bias)
@@ -112,6 +145,17 @@ class CNN():
             return self.activate(conv_bias)
 
     def fc_layer(self, input, name):
+        '''Creates a feed-forward/fully-connected layer with variable scopes
+        for tensorboard visualization. Shapes for the weights/bias are provided
+        by the cnn_architectures class. Does NOT perform an activation.
+
+        @params
+        input: input tensor to the layer
+        name: specifies whether it's a fully-connected or convolutional layer
+
+        @returns
+        a tensorflow op for the whole layer
+        '''
         with tf.variable_scope(name):
             input_shape = input.get_shape().as_list()
             shape = [input_shape[1], self.architecture[name][1]]
@@ -119,7 +163,7 @@ class CNN():
                 weights = self.get_weights('weights', shape)
                 variable_summaries(weights)
             with tf.variable_scope('fc_bias'):
-                bias = self.get_fc_bias(shape)
+                bias = self.get_bias('fc_bias', shape)
                 variable_summaries(bias)
             with tf.variable_scope('fully_connected'):
                 fc = tf.nn.bias_add(tf.matmul(input, weights), bias)
@@ -127,13 +171,29 @@ class CNN():
             return fc
 
     def get_weights(self, name, shape):
+        '''Initializes weights for fully-connected or convolutional layers,
+        resp.
+
+        @params
+        name: specifies whether it's for a fully-connected or conv. layer
+        shape: specifies the shape the weight matrix is supposed to have
+
+        @returns
+        a tensor of shape *shape*
+        '''
         return tf.get_variable(name, shape,
             initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 
-    def get_conv_bias(self, shape):
-        return tf.get_variable('conv_bias', shape[-1],
-            initializer = tf.constant_initializer(0.1))
+    def get_bias(self, name, shape):
+        '''Initializes a bias for fully-connected or convolutional layers,
+        resp.
 
-    def get_fc_bias(self, shape):
-        return tf.get_variable('fc_bias', shape[-1],
+        @params
+        name: specifies whether it's for a fully-connected or conv. layer
+        shape: specifies the shape the bias vector is supposed to have
+
+        @returns
+        a 1d tensor
+        '''
+        return tf.get_variable(name, shape[-1],
             initializer = tf.constant_initializer(0.1))
