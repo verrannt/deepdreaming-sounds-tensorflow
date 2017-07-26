@@ -103,8 +103,8 @@ def train(path, n_iterations, batch_size):
 			if np.mean(accuracies) > 0.7:
 				learning_rate = 0.0001
 				print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\
-					Learning rate decreased to 0.0001\
-					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+				Learning rate decreased to 0.0001\n\
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 			# Save session every 500 steps
 			if i % 500 == 0:
