@@ -102,8 +102,10 @@ def train(path, n_iterations, batch_size):
 				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 				only_once = False
 
-			# Save session every 500 steps
-			if i % 10 == 0:
+			# Save session every 500 steps (Tensorflow will automatically
+			# always keep only the last 5 saving instances, so we don't need
+			# to worry too much about local memory)
+			if i % 500 == 0:
 				saver.save(ses, "logs/model/model.ckpt", global_step = i)
 
 			# Add summaries for tensorboard visualization
