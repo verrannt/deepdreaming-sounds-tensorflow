@@ -8,9 +8,8 @@ This project is currently a __work in progress__. So far, training accuracies re
 
 ### Dataset
 
-We used the [UrbanSound8K dataset](https://serv.cusp.nyu.edu/projects/urbansounddataset/urbansound8k.html) compiled by NYU researchers Justin Salamon, Christopher Jacoby and Juan Pablo Bello that we slightly modified ourselves. A thorough description of the dataset and the modifications can be found in the [UrbanSound8K_README](./UrbanSound8K_modified/README.txt).
-
-The files in the dataset are provided in .wav format. When using the network, they will automatically be converted to spectograms before being fed into the network. 
+We used the [UrbanSound8K dataset](https://serv.cusp.nyu.edu/projects/urbansounddataset/urbansound8k.html) compiled by NYU researchers Justin Salamon, Christopher Jacoby and Juan Pablo Bello that we slightly modified ourselves. 
+In order to use the network, please download the modified version manually from Google Drive storage (link provided in the reference section) and save it in your local copy of this repository. After extraction (it's a .zip), you should see the folder *"UrbanSound8K_modified"* in the main directory, which contains the *README.txt* and *FREESOUNDCREDITS.txt* files as well as the *"audio"* directory, in which all the .wav-files reside in their respective class. All of our modifications are explained in the *README.txt*.
 
 ### File descriptions
 
@@ -18,7 +17,6 @@ To get an overview over the files in this repository, here is a short descriptio
 
 + __datatools__ includes several python and shell scripts we wrote for the modification of the dataset. Since the compiling of the dataset is finished these are not necessary for the training/Deepdream procedure and have been included for completeness only.
 + __images__ includes images used in this readme and some infographics about our current progress.
-+ __UrbanSound8K_modified__ includes the readme file for the modified dataset and credits to [freesound.org](https://freesound.org). The pickled dataset will also be stored in this directory (more on that under #Usage).
 + __train.py__ is the main file for training the network. It imports __utilities.py__ which is responsible for creating appropriate training, testing and validation batches from the dataset as well as the Tensorflow implementation of a CNN that we wrote in __model.py__. The batches then will be fed into the model in order to train it on the data.
 + __cnn_architectures.py__ contains a simple helper class that returns python dicitonaries describing the shapes of the different neural network layers to ease playing around with different architectures.
 
