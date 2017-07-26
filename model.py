@@ -44,13 +44,13 @@ class CNN():
         self.fc1_dropout = tf.nn.dropout(self.fc1, self.keep_prob)
         self.output = self.fc_layer(self.fc1_dropout, 'fc2')
 
-        with tf.name_scope('cross_entropy'):
+        with tf.variable_scope('cross_entropy'):
             self.cross_entropy = tf.reduce_mean(
                 tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.output))
         self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.cross_entropy)
-        with tf.name_scope('correct_prediction'):
+        with tf.variable_scope('correct_prediction'):
             self.correct_prediction = tf.equal(tf.argmax(self.output,1), tf.argmax(self.labels,1))
-        with tf.name_scope('accuracy'):
+        with tf.variable_scope('accuracy'):
             self.accuracy = tf.reduce_mean(tf.cast(self.correct_prediction, tf.float32))
 
         tf.summary.scalar('accuracy', self.accuracy)
@@ -81,16 +81,16 @@ class CNN():
         with tf.variable_scope(name):
             shape = self.architecture[name]
             print(shape)
-            with tf.name_scope('conv_kernel'):
+            with tf.variable_scope('conv_kernel'):
                 kernel = self.get_weights('kernel', shape)
                 variable_summaries(kernel)
-            with tf.name_scope('convolution'):
+            with tf.variable_scope('convolution'):
                 conv = tf.nn.conv2d(input, kernel, strides=[1,1,1,1], padding='SAME')
                 variable_summaries(conv)
-            with tf.name_scope('conv_bias'):
+            with tf.variable_scope('conv_bias'):
                 bias = self.get_conv_bias(shape)
                 variable_summaries(bias)
-            with tf.name_scope('convolution_with_bias'):
+            with tf.variable_scope('convolution_with_bias'):
                 conv_bias = tf.nn.bias_add(conv, bias)
                 tf.summary.histogram('pre_activations_conv', conv_bias)
             return self.activate(conv_bias)
@@ -99,19 +99,18 @@ class CNN():
         with tf.variable_scope(name):
             input_shape = input.get_shape().as_list()
             shape = [input_shape[1], self.architecture[name][1]]
-            with tf.name_scope('fc_weights'):
+            with tf.variable_scope('fc_weights'):
                 weights = self.get_weights('weights', shape)
                 variable_summaries(weights)
-            with tf.name_scope('fc_bias'):
+            with tf.variable_scope('fc_bias'):
                 bias = self.get_fc_bias(shape)
                 variable_summaries(bias)
-            with tf.name_scope('fully_connected'):
+            with tf.variable_scope('fully_connected'):
                 fc = tf.nn.bias_add(tf.matmul(input, weights), bias)
                 tf.summary.histogram('pre_activations_fc', fc)
             return fc
 
     def get_weights(self, name, shape):
-        # original stddev 0.1
         return tf.get_variable(name, shape,
             initializer = tf.random_normal_initializer(mean=0,stddev=0.8))
 

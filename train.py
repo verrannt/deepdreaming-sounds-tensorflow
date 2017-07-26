@@ -14,8 +14,8 @@ from model import CNN
 dir_content = listdir("UrbanSound8K_modified")
 if not 'urbansound.pkl' in dir_content:
 	# TODO get the right adress
-	url = 'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
 	print("Dataset not found. Downloading 468MB, please wait ...")
+	url = 'http://s33.filefactory.com/get/f/4o4d4li32zwl/2709b0a6c35442fe/UrbanSound8K_modified_v2.zip'
 	urllib.request.urlretrieve(url, "./UrbanSound8K_modified/urbansound.zip")
 	zip_ref = zipfile.ZipFile("./UrbanSound8K_modified/urbansound.zip", 'r')
 	zip_ref.extractall("./UrbanSound8K_modified/")
@@ -116,7 +116,8 @@ def train(path, n_iterations, batch_size):
 		# Final testing evaluation
 		test_acc = ses.run(
 			model.accuracy,
-			feed_dict={model.x:testX, model.labels:testY, model.keep_prob:1.0})
+			feed_dict={model.x:testX, model.labels:testY,
+				model.keep_prob:1.0, model.learning_rate:learning_rate})
 		print("Test accuracy: %g"%(test_acc))
 
 		# Close the summary writer
