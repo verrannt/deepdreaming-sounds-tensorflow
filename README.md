@@ -91,7 +91,7 @@ As mentioned above, the deep dreaming process is not yet applied.
 
 1. Thanks to the creators of the original UrbanSound8K dataset: J. Salamon, C. Jacoby and J. P. Bello, "A Dataset and Taxonomy for Urban Sound Research", 22nd ACM International Conference on Multimedia, Orlando USA, Nov. 2014.
 
-2. The [modified UrbanSound8K dataset](https://drive.google.com/file/d/0B1Lthv7SdgIbbzJqVHk4U3ZWWHM/view?usp=sharing)
+2. The [modified UrbanSound8K dataset](https://drive.google.com/open?id=0B1Lthv7SdgIbbzJqVHk4U3ZWWHM)
 
 3. The [weights, metagraph, and complete graph]() of our last training
 
