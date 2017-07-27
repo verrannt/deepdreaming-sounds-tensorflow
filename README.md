@@ -65,7 +65,7 @@ If you want to obtain the weights and meta graph from our last training, simply 
 
 #### Evaluation
 
-We provided a script called *eval.py* which, after successfull training, can be used to further test the trained network on some samples. It needs a valid protobuf file that contains both the network structure (the meta graph) and the saved weights to work. To obtain such a file, use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. From this directory, an appropriate call from the shell looks like this:
+We provided a script called *eval.py* which, after successfull training, can be used to further test the trained network on some samples. It needs a valid protobuf file that contains both the network structure (the meta graph) and the saved weights to work. To obtain such a file, use the [*freeze_graph.py*](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/tools/freeze_graph.py) script made by the Google developers. From this directory, an appropriate call from the shell inside of your tensorflow environment looks like this:
 
 ```bash
 python freeze_graph.py --input_graph logs/model/graph.pb --input_checkpoint logs/model/model.ckpt --input_binary True --output_graph logs/model/output.pb --output_node_names fc2/fully_connected/fc_out
