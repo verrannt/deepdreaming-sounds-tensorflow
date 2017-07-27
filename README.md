@@ -1,7 +1,7 @@
 # Deep Dreaming Sounds In Tensorflow
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Up until now there has been a lot of work using Google's Deepdream algorithm to visualize the internal representations of artificial neural networks. But to the best of our knowledge, there has not been any work with neural networks trained on sound data instead of image data. In this project we trained a convolutional neural network on sound data in order to apply the Deepdream algorithm to it.
 
