@@ -93,6 +93,6 @@ As mentioned above, the deep dreaming process is not yet applied.
 
 2. The [modified UrbanSound8K dataset](https://drive.google.com/open?id=0B1Lthv7SdgIbbzJqVHk4U3ZWWHM)
 
-3. The [weights, metagraph, and complete graph]() of our last training
+3. The [weights, metagraph, and complete graph](https://drive.google.com/open?id=0B1Lthv7SdgIbZnFaeEswX0t2TG8) of our last training session (8800 iterations, batch size: 100)
 
 4. Further thanks to Arthur Juliani and his [sound-cnn](https://github.com/awjuliani/sound-cnn) for providing us ideas on how to read wav files into a convolutional neural network.
