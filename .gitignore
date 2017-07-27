@@ -4,6 +4,7 @@
 
 # LOG FILES #
 logs
+logs_old
 __pycache__
 runs.log
 
