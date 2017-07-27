@@ -61,7 +61,7 @@ path = "./UrbanSound8K_modified/urbansound.pkl"
 
 The meta graph, called *graph.pb*, will be saved in */logs/model/*, as will be the *model.ckpt* checkpoint files for the weights after every 500 training iterations (don't worry about your local storage though - Tensorflow only ever keeps the last five checkpoint instances). Summary files that can be used for visualizations using tensorboard will be saved in */logs/tensorboard/*. Don't worry if you do not see the *logs* directory yet, it will be created upon the first call of *train.py*, since git does not allow the syncing of empty directories.
 
-If you want to obtain the weights and meta graph from our last training, simply head to the [Reference](#references) section, where a download link to Google Drive storage is provided under [3]. 
+If you want to obtain the weights and meta graph from our last training, simply head to the [Reference](#references-and-acknowledgements) section, where a download link to Google Drive storage is provided under [3]. 
 
 #### Evaluation
 
