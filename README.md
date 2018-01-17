@@ -7,7 +7,7 @@ Up until now there has been a lot of work using Google's Deepdream algorithm to 
 
 ### Progress
 
-This project is currently a __work in progress__. So far, training accuracies reach about 70 %. The Deepdream algorithm is yet to be applied.
+This project has been __DISCONTINUED__. As of its latest state, training accuracies reach about 70 %. The Deepdream algorithm is not yet applied.
 
 ### Dataset
 
